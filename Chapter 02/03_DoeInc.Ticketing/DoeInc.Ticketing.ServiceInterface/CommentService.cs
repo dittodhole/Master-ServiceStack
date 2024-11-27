@@ -27,21 +27,29 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteComment request)
         {
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetComments>(request.TicketId));
             this.Repository.Delete(request);
         }
 
         public object Get(GetComments request)
         {
-            return this.Repository.Read(request);
+            return this.Request.ToOptimizedResultUsingCache(this.Cache,
+                                                            UrnId.Create<GetComments>(request.TicketId),
+                                                            () => this.Repository.Read(request));
         }
 
         public object Post(StoreComment request)
         {
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetComments>(request.TicketId));
             return this.Repository.Store(request);
         }
 
         public object Put(StoreComment request)
         {
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetComments>(request.TicketId));
             return this.Repository.Store(request);
         }
     }
