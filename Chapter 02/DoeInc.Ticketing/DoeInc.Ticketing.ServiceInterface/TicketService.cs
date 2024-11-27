@@ -1,5 +1,4 @@
-﻿using System;
-using DoeInc.Ticketing.Core;
+﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
 using ServiceStack;
 
@@ -29,27 +28,27 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteTicket request)
         {
-            throw new NotImplementedException();
+            this.Repository.Delete(request);
         }
 
         public object Get(GetTicket request)
         {
-            throw new NotImplementedException();
+            return this.Repository.Read(request);
         }
 
         public object Get(GetTickets request)
         {
-            throw new NotImplementedException();
+            return this.Repository.Read();
         }
 
         public object Post(StoreTicket request)
         {
-            throw new NotImplementedException();
+            return this.Repository.Store(request);
         }
 
         public object Put(StoreTicket request)
         {
-            throw new NotImplementedException();
+            return this.Repository.Store(request);
         }
     }
 }

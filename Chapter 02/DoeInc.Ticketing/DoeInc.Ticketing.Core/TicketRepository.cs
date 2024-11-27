@@ -1,4 +1,7 @@
-﻿using ServiceStack.Data;
+﻿using System;
+using DoeInc.Ticketing.ServiceModel;
+using DoeInc.Ticketing.ServiceModel.Types;
+using ServiceStack.Data;
 
 namespace DoeInc.Ticketing.Core
 {
@@ -17,6 +20,26 @@ namespace DoeInc.Ticketing.Core
             {
                 return this._dbConnectionFactory;
             }
+        }
+
+        public void Delete(DeleteTicket request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Ticket Read(GetTicket request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Ticket[] Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Ticket Store(StoreTicket request)
+        {
+            throw new NotImplementedException();
         }
     }
 }
