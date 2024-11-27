@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Models", "RabbitMQ.Models\RabbitMQ.Models.csproj", "{73691701-F393-4195-85F6-0BD71963FA5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.ComponentA", "RabbitMQ.ComponentA\RabbitMQ.ComponentA.csproj", "{620D048D-3557-4771-A58E-519883C86B9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.ComponentB", "RabbitMQ.ComponentB\RabbitMQ.ComponentB.csproj", "{BFD0426A-A8DF-40DD-8691-BCE0501152DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73691701-F393-4195-85F6-0BD71963FA5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73691701-F393-4195-85F6-0BD71963FA5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73691701-F393-4195-85F6-0BD71963FA5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73691701-F393-4195-85F6-0BD71963FA5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{620D048D-3557-4771-A58E-519883C86B9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{620D048D-3557-4771-A58E-519883C86B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{620D048D-3557-4771-A58E-519883C86B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{620D048D-3557-4771-A58E-519883C86B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFD0426A-A8DF-40DD-8691-BCE0501152DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFD0426A-A8DF-40DD-8691-BCE0501152DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFD0426A-A8DF-40DD-8691-BCE0501152DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFD0426A-A8DF-40DD-8691-BCE0501152DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
