@@ -1,6 +1,5 @@
 ﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
-using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
@@ -29,12 +28,17 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteTicket request)
         {
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetTicket>(request.Id),
+                                         UrnId.Create<GetTickets>(string.Empty));
             this.Repository.Delete(request);
         }
 
         public object Get(GetTicket request)
         {
-            var ticket = this.Repository.Read(request);
+            var ticket = this.Request.ToOptimizedResultUsingCache(this.Cache,
+                                                                  UrnId.Create<GetTicket>(request.Id),
+                                                                  () => this.Repository.Read(request));
             if (ticket == null)
             {
                 return HttpError.NotFound("The requested ticket instance cannot be found");
@@ -44,18 +48,28 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public object Get(GetTickets request)
         {
-            this.SessionBag["foo"] = string.Empty;
-            return this.Repository.Read();
+            var tickets = this.Request.ToOptimizedResultUsingCache(this.Cache,
+                                                                   UrnId.Create<GetTickets>(string.Empty),
+                                                                   () => this.Repository.Read());
+            return tickets;
         }
 
         public object Post(StoreTicket request)
         {
-            return this.Repository.Store(request);
+            var ticket = this.Repository.Store(request);
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetTicket>(ticket.Id),
+                                         UrnId.Create<GetTickets>(string.Empty));
+            return ticket;
         }
 
         public object Put(StoreTicket request)
         {
-            return this.Repository.Store(request);
+            var ticket = this.Repository.Store(request);
+            this.Request.RemoveFromCache(this.Cache,
+                                         UrnId.Create<GetTicket>(ticket.Id),
+                                         UrnId.Create<GetTickets>(string.Empty));
+            return ticket;
         }
     }
 }
