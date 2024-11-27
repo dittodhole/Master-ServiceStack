@@ -28,6 +28,21 @@ namespace RabbitMQ.ComponentB
                                  noAck: false,
                                  consumer: consumer);
 
+            var messageHandler = new MessageHandler<Hello>(rabbitMqServer,
+                                                           message =>
+                                                           {
+                                                               if (message.RetryAttempts == 0)
+                                                               {
+                                                                   throw new Exception();
+                                                               }
+                                                               var hello = message.GetBody();
+                                                               var name = hello.Name;
+
+                                                               name.Print();
+
+                                                               return null;
+                                                           });
+
             Task.Run(() =>
                      {
                          while (true)
@@ -47,16 +62,10 @@ namespace RabbitMQ.ComponentB
                                  // this is ok
                                  return;
                              }
-                             catch (Exception ex)
-                             {
-                                 throw;
-                             }
-                             var message = basicGetResult.ToMessage<Hello>();
-                             var hello = message.GetBody();
-                             var name = hello.Name;
-                             var result = "Hello {0}".Fmt(name);
 
-                             result.Print();
+                             var message = basicGetResult.ToMessage<Hello>();
+                             messageHandler.ProcessMessage(messageQueueClient,
+                                                           message);
                          }
                      });
 
