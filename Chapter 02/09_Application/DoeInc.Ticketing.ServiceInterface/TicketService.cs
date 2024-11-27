@@ -55,16 +55,21 @@ namespace DoeInc.Ticketing.ServiceInterface
                                  .UserAuthId;
             var ticketId = request.Id;
 
-            var ticket = this.Request.ToOptimizedResultUsingCache(this.Cache,
-                                                                  UrnId.Create<GetTicket>(ticketId),
-                                                                  () => this.Repository.Read(ticketId,
-                                                                                             userAuthId));
-            if (ticket == null)
-            {
-                throw HttpError.NotFound("The requested ticket instance cannot be found");
-            }
+            var response = this.Request.ToOptimizedResultUsingCache(this.Cache,
+                                                                    UrnId.Create<GetTicket>(ticketId),
+                                                                    () =>
+                                                                    {
+                                                                        var ticket = this.Repository.Read(ticketId,
+                                                                                                          userAuthId);
+                                                                        if (ticket == null)
+                                                                        {
+                                                                            throw HttpError.NotFound("The requested ticket instance cannot be found");
+                                                                        }
 
-            return ticket;
+                                                                        return ticket;
+                                                                    });
+
+            return response;
         }
 
         [DefaultView("Tickets")]
