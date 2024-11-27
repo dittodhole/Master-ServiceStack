@@ -3,7 +3,6 @@ using DoeInc.Ticketing.ServiceInterface;
 using DoeInc.Ticketing.ServiceModel;
 using Funq;
 using ServiceStack;
-using ServiceStack.Api.Swagger;
 using ServiceStack.Caching;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -12,21 +11,12 @@ namespace DoeInc.Ticketing.Web
 {
     public class AppHost : AppHostBase
     {
-        /// <summary>
-        ///     Default constructor.
-        ///     Base constructor requires a name and assembly to locate web service classes.
-        /// </summary>
         public AppHost()
             : base("DoeInc.Ticketing",
                    typeof(TicketService).Assembly)
         {
         }
 
-        /// <summary>
-        ///     Application specific configuration
-        ///     This method should initialize any IoC resources utilized by your web service classes.
-        /// </summary>
-        /// <param name="container"></param>
         public override void Configure(Container container)
         {
             this.RegisterRoutes();
@@ -75,7 +65,6 @@ namespace DoeInc.Ticketing.Web
 
         private void RegisterPlugins()
         {
-            this.Plugins.Add(new SwaggerFeature());
             this.Plugins.Add(new SessionFeature());
         }
     }
