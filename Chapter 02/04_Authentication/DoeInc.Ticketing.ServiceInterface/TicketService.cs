@@ -29,17 +29,26 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteTicket request)
         {
-            this.Request.RemoveFromCache(this.Cache,
-                                         UrnId.Create<GetTicket>(request.Id),
-                                         UrnId.Create<GetTickets>(string.Empty));
-            this.Repository.Delete(request);
+            var userAuthId = this.GetSession()
+                                 .UserAuthId;
+            if (this.Repository.Delete(request,
+                                       userAuthId))
+            {
+                this.Request.RemoveFromCache(this.Cache,
+                                             UrnId.Create<GetTicket>(request.Id),
+                                             UrnId.Create<GetTickets>(userAuthId));
+            }
         }
 
         public object Get(GetTicket request)
         {
+            var userAuthId = this.GetSession()
+                                 .UserAuthId;
+            var ticketId = request.Id;
             var ticket = this.Request.ToOptimizedResultUsingCache(this.Cache,
-                                                                  UrnId.Create<GetTicket>(request.Id),
-                                                                  () => this.Repository.Read(request));
+                                                                  UrnId.Create<GetTicket>(ticketId),
+                                                                  () => this.Repository.Read(request,
+                                                                                             userAuthId));
             if (ticket == null)
             {
                 return HttpError.NotFound("The requested ticket instance cannot be found");
@@ -49,27 +58,35 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public object Get(GetTickets request)
         {
+            var userAuthId = this.GetSession()
+                                 .Id;
             var tickets = this.Request.ToOptimizedResultUsingCache(this.Cache,
-                                                                   UrnId.Create<GetTickets>(string.Empty),
-                                                                   () => this.Repository.Read());
+                                                                   UrnId.Create<GetTickets>(userAuthId),
+                                                                   () => this.Repository.Read(userAuthId));
             return tickets;
         }
 
         public object Post(StoreTicket request)
         {
-            var ticket = this.Repository.Store(request);
+            var userAuthId = this.GetSession()
+                                 .UserAuthId;
+            var ticket = this.Repository.Store(request,
+                                               userAuthId);
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
-                                         UrnId.Create<GetTickets>(string.Empty));
+                                         UrnId.Create<GetTickets>(userAuthId));
             return ticket;
         }
 
         public object Put(StoreTicket request)
         {
-            var ticket = this.Repository.Store(request);
+            var userAuthId = this.GetSession()
+                                 .UserAuthId;
+            var ticket = this.Repository.Store(request,
+                                               userAuthId);
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
-                                         UrnId.Create<GetTickets>(string.Empty));
+                                         UrnId.Create<GetTickets>(userAuthId));
             return ticket;
         }
     }

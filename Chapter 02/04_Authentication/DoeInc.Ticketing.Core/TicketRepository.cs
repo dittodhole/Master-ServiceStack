@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DoeInc.Ticketing.ServiceModel;
 using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
@@ -33,33 +32,46 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
-        public void Delete(DeleteTicket request)
+        public bool Delete(DeleteTicket request,
+                           string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
-                db.DeleteById<Ticket>(request.Id);
+                return db.Delete<Ticket>(new
+                                         {
+                                             request.Id,
+                                             ProcessorUserAuthId = userAuthId
+                                         }) > 1;
             }
         }
 
-        public Ticket Read(GetTicket request)
+        public Ticket Read(GetTicket request,
+                           string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
-                return db.SingleById<Ticket>(request.Id);
+                return db.Single<Ticket>(new
+                                         {
+                                             request.Id,
+                                             ProcessorUserAuthId = userAuthId
+                                         });
             }
         }
 
-        public List<Ticket> Read()
+        public List<Ticket> Read(string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
-                return db.Select<Ticket>();
+                return db.Select<Ticket>(ticket => ticket.ProcessorUserAuthId == userAuthId);
             }
         }
 
-        public Ticket Store(StoreTicket request)
+        public Ticket Store(StoreTicket request,
+                            string userAuthId)
         {
             var ticket = request.ConvertTo<Ticket>();
+            ticket.ProcessorUserAuthId = userAuthId;
+
             using (var db = this.ConnectionFactory.Open())
             {
                 bool success;
