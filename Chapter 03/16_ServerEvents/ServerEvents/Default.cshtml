@@ -19,18 +19,6 @@
     }, false);
     $(eventSource).handleServerEvents({
         handlers: {
-            onConnect: function (subscription) {
-                console.log('onConnect', subscription);
-            },
-            onHeartbeat: function(msg, e) {
-                console.log('onHeartbeat', msg, e);
-            },
-            onJoin: function (subscription) {
-                console.log('onJoin', subscription);
-            },
-            onLeave: function (subscription) {
-                console.log('onLeave', subscription);
-            },
             Say: function(msg, e) {
                 console.log(msg);
             }
