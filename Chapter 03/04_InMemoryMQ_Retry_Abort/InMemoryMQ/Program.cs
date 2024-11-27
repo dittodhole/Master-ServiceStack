@@ -17,13 +17,11 @@ namespace InMemoryMQ
 
             messageService.RegisterHandler<Hello>(message =>
                                                   {
+                                                      var hello = message.GetBody();
+                                                      "Name: {0}, retried for {1} times".Print(hello.Name,
+                                                                                               message.RetryAttempts);
+
                                                       throw new UnRetryableMessagingException("something went terribly wrong");
-                                                  },
-                                                  (messageHandler,
-                                                   message,
-                                                   exception) =>
-                                                  {
-                                                      exception.PrintDump();
                                                   });
             messageService.RegisterHandler<HelloResponse>(message =>
                                                           {

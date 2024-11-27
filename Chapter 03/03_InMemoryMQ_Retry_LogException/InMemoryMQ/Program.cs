@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using ServiceStack;
 using ServiceStack.Messaging;
@@ -17,17 +16,19 @@ namespace InMemoryMQ
 
             messageService.RegisterHandler<Hello>(message =>
                                                   {
+                                                      var hello = message.GetBody();
+                                                      "Name: {0}, retried for {1} times".Print(hello.Name,
+                                                                                               message.RetryAttempts);
+
                                                       if (message.RetryAttempts == 0)
                                                       {
                                                           throw new Exception();
                                                       }
 
-                                                      var hello = message.GetBody();
                                                       var name = hello.Name;
                                                       var helloResponse = new HelloResponse
                                                                           {
-                                                                              Result = "Hello {0}, I've retried it for {1} times".Fmt(name,
-                                                                                                                                      message.RetryAttempts)
+                                                                              Result = "Hello {0}".Fmt(name)
                                                                           };
 
                                                       return helloResponse;
@@ -37,6 +38,13 @@ namespace InMemoryMQ
                                                    exception) =>
                                                   {
                                                       exception.PrintDump();
+
+                                                      var requeue = ++message.RetryAttempts < TransientMessageServiceBase.DefaultRetryCount;
+                                                      //var requeue = ++message.RetryAttempts < MessageHandler<Hello>.DefaultRetryCount;
+
+                                                      messageHandler.MqClient.Nak(message,
+                                                                                  requeue,
+                                                                                  exception);
                                                   });
             messageService.RegisterHandler<HelloResponse>(message =>
                                                           {
