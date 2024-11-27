@@ -9,6 +9,15 @@ namespace HelloWorld
 {
     public class MessageServiceRequestLogger : InMemoryRollingRequestLogger
     {
+        private readonly string _component;
+
+        public MessageServiceRequestLogger(string component)
+        {
+            this._component = component;
+        }
+
+        public IMessageService MessageService { get; set; }
+
         public override void Log(IRequest request,
                                  object requestDto,
                                  object response,
@@ -29,6 +38,11 @@ namespace HelloWorld
                 return;
             }
 
+            if (this.MessageService == null)
+            {
+                return;
+            }
+
             var requestLogEntry = this.CreateEntry(request,
                                                    requestDto,
                                                    response,
@@ -36,14 +50,11 @@ namespace HelloWorld
                                                    requestType);
 
             requestLogEntry.Items.Add("Component",
-                                      "HelloWorld");
+                                      this._component);
 
-            using (var messageService = request.TryResolve<IMessageService>())
+            using (var messageProducer = this.MessageService.CreateMessageProducer())
             {
-                using (var messageProducer = messageService.CreateMessageProducer())
-                {
-                    messageProducer.Publish(requestLogEntry);
-                }
+                messageProducer.Publish(requestLogEntry);
             }
         }
 
