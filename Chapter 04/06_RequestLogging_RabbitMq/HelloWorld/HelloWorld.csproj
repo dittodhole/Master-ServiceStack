@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHost.cs" />
-    <Compile Include="RabitMqRequestLogger.cs" />
+    <Compile Include="MessageServiceRequestLogger.cs" />
     <Compile Include="HelloService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

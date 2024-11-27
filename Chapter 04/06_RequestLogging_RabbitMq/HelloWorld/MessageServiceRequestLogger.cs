@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.Host;
-using ServiceStack.RabbitMq;
+using ServiceStack.Messaging;
 using ServiceStack.Web;
 
 namespace HelloWorld
 {
-    public class RabitMqRequestLogger : InMemoryRollingRequestLogger
+    public class MessageServiceRequestLogger : InMemoryRollingRequestLogger
     {
         public override void Log(IRequest request,
                                  object requestDto,
@@ -38,9 +38,9 @@ namespace HelloWorld
             requestLogEntry.Items.Add("Component",
                                       "HelloWorld");
 
-            using (var rabbitMqServer = new RabbitMqServer())
+            using (var messageService = request.TryResolve<IMessageService>())
             {
-                using (var messageProducer = rabbitMqServer.CreateMessageProducer())
+                using (var messageProducer = messageService.CreateMessageProducer())
                 {
                     messageProducer.Publish(requestLogEntry);
                 }

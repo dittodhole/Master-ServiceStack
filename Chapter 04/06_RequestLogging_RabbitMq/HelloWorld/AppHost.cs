@@ -1,5 +1,7 @@
 ﻿using Funq;
 using ServiceStack;
+using ServiceStack.Messaging;
+using ServiceStack.RabbitMq;
 
 namespace HelloWorld
 {
@@ -13,9 +15,11 @@ namespace HelloWorld
 
         public override void Configure(Container container)
         {
+            container.Register<IMessageService>(arg => new RabbitMqServer());
+
             this.Plugins.Add(new RequestLogsFeature
                              {
-                                 RequestLogger = new RabitMqRequestLogger()
+                                 RequestLogger = new MessageServiceRequestLogger()
                              });
         }
     }

@@ -9,9 +9,9 @@ namespace LogReceiver
     {
         private static void Main(string[] args)
         {
-            using (var rabbitMqServer = new RabbitMqServer())
+            using (var messageService = new RabbitMqServer())
             {
-                rabbitMqServer.RegisterHandler<RequestLogEntry>(message =>
+                messageService.RegisterHandler<RequestLogEntry>(message =>
                                                                 {
                                                                     var requestLogEntry = message.GetBody();
 
@@ -19,7 +19,7 @@ namespace LogReceiver
 
                                                                     return null;
                                                                 });
-                rabbitMqServer.Start();
+                messageService.Start();
 
                 "Press Enter to exit".Print();
 
