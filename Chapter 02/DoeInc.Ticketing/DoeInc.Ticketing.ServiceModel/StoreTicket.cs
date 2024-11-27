@@ -3,7 +3,7 @@ using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceModel
 {
-    public class CreateOrUpdateTicket : IReturn<Ticket>
+    public class StoreTicket : IReturn<Ticket>
     {
         public string Id { get; set; }
         public string RowVersion { get; set; }
