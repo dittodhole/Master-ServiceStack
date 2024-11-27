@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DoeInc.ServiceStack.Extensions
+﻿namespace DoeInc.ServiceStack.Extensions
 {
     public sealed class ThrottleCounter
     {
