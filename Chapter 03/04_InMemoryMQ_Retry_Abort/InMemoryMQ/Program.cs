@@ -11,16 +11,12 @@ namespace InMemoryMQ
     {
         private static void Main(string[] args)
         {
-            "program on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
-
             var inMemoryTransientMessageFactory = new InMemoryTransientMessageFactory();
 
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
 
             messageService.RegisterHandler<Hello>(message =>
                                                   {
-                                                      "consumer called for the {0} time".Print(message.RetryAttempts);
-
                                                       throw new UnRetryableMessagingException("something went terribly wrong");
                                                   },
                                                   (messageHandler,
@@ -45,8 +41,6 @@ namespace InMemoryMQ
                               i < 10;
                               i++)
                          {
-                             "producer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
-
                              var hello = new Hello
                                          {
                                              Name = i.ToString()

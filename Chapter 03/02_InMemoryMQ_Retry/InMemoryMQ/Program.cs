@@ -11,16 +11,12 @@ namespace InMemoryMQ
     {
         private static void Main(string[] args)
         {
-            "program on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
-
             var inMemoryTransientMessageFactory = new InMemoryTransientMessageFactory();
 
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
 
             messageService.RegisterHandler<Hello>(message =>
                                                   {
-                                                      "consumer called for the {0} time".Print(message.RetryAttempts);
-
                                                       if (message.RetryAttempts == 0)
                                                       {
                                                           throw new Exception();
@@ -30,10 +26,9 @@ namespace InMemoryMQ
                                                       var name = hello.Name;
                                                       var helloResponse = new HelloResponse
                                                                           {
-                                                                              Result = "Hello {0}".Fmt(name)
+                                                                              Result = "Hello {0}, I've retried it for {1} times".Fmt(name,
+                                                                                                                                      message.RetryAttempts)
                                                                           };
-
-                                                      "consumer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
 
                                                       return helloResponse;
                                                   });
@@ -53,8 +48,6 @@ namespace InMemoryMQ
                               i < 10;
                               i++)
                          {
-                             "producer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
-
                              var hello = new Hello
                                          {
                                              Name = i.ToString()
