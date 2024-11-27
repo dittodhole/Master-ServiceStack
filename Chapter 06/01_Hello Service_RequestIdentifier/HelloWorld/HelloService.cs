@@ -1,5 +1,4 @@
-﻿using DoeInc.ServiceStack.Extensions;
-using ServiceStack;
+﻿using ServiceStack;
 
 namespace HelloWorld
 {
