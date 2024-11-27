@@ -1,6 +1,5 @@
 ﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
-using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
@@ -37,20 +36,25 @@ namespace DoeInc.Ticketing.ServiceInterface
             var ticket = this.Repository.Read(request);
             if (ticket == null)
             {
-                return HttpError.NotFound("The requested ticket instance cannot be found");
+                throw HttpError.NotFound("The requested ticket instance cannot be found");
             }
             return ticket;
         }
 
         public object Get(GetTickets request)
         {
-            this.SessionBag["foo"] = string.Empty;
             return this.Repository.Read();
         }
 
         public object Post(StoreTicket request)
         {
-            return this.Repository.Store(request);
+            var ticket = this.Repository.Store(request);
+            if (ticket == null)
+            {
+                throw HttpError.NotFound("The ticket instance cannot be found for update");
+            }
+
+            return ticket;
         }
 
         public object Put(StoreTicket request)
