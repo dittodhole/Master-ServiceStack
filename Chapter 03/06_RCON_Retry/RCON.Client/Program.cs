@@ -19,17 +19,12 @@ namespace RCON.Client
             var client = new Client(ipEndPoint);
             client.Connect();
 
-            for (var i = 0;
-                 i < 1;
-                 i++)
+            var hello = new Hello
             {
-                var hello = new Hello
-                            {
-                                Name = i.ToString()
-                            };
-                client.Call(hello,
-                            Program.CallbackAfterHello);
-            }
+                Name = i.ToString()
+            };
+            client.Call(hello,
+                        Program.CallbackAfterHello);
             Console.ReadLine();
         }
 
@@ -40,8 +35,8 @@ namespace RCON.Client
             if (initialMessage.Error != null)
             {
                 var client = (Client) rconClient;
-                client.Call(initialMessage,
-                            Program.CallbackAfterHello);
+                client.Requeue(initialMessage,
+                               Program.CallbackAfterHello);
             }
             else
             {

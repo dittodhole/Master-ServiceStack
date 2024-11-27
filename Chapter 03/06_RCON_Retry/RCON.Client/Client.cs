@@ -19,8 +19,8 @@ namespace RCON.Client
             this._callbacks = (Dictionary<uint, AsyncCallback>) fieldInfo.GetValue(this);
         }
 
-        public void Call<T>(IMessage<T> message,
-                            AsyncCallback callback)
+        public void Requeue<T>(IMessage<T> message,
+                               AsyncCallback callback)
         {
             this._callbacks[this.SequenceID] = callback;
             this.InternalSend(new[]
