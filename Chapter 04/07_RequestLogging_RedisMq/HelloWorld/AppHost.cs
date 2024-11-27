@@ -23,6 +23,9 @@ namespace HelloWorld
             this.Plugins.Add(new RequestLogsFeature
                              {
                                  RequestLogger = new MessageServiceRequestLogger("Hello World Service on {0}".Fmt(Environment.MachineName))
+                                                 {
+                                                     MessageService = container.Resolve<IMessageService>()
+                                                 }
                              });
         }
     }
