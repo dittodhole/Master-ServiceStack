@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateOrUpdateComment.cs" />
-    <Compile Include="CreateOrUpdateTicket.cs" />
+    <Compile Include="StoreComment.cs" />
+    <Compile Include="StoreTicket.cs" />
     <Compile Include="DeleteComment.cs" />
     <Compile Include="DeleteTicket.cs" />
     <Compile Include="GetComments.cs" />
