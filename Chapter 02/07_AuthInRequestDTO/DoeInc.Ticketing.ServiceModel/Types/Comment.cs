@@ -11,5 +11,6 @@ namespace DoeInc.Ticketing.ServiceModel.Types
         public int Id { get; set; }
 
         public ulong RowVersion { get; set; }
+        public string CreatorUserAuthId { get; set; }
     }
 }

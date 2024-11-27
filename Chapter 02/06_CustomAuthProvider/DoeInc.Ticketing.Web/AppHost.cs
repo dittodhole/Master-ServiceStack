@@ -3,7 +3,6 @@ using DoeInc.Ticketing.ServiceInterface;
 using DoeInc.Ticketing.ServiceModel;
 using Funq;
 using ServiceStack;
-using ServiceStack.Api.Swagger;
 using ServiceStack.Auth;
 using ServiceStack.Caching;
 using ServiceStack.Data;
@@ -28,8 +27,6 @@ namespace DoeInc.Ticketing.Web
 
         private void RegisterPlugins()
         {
-            this.Plugins.Add(new PostmanFeature());
-            this.Plugins.Add(new SwaggerFeature());
             this.Plugins.Add(new SessionFeature());
             this.Plugins.Add(new AuthFeature(() => new CustomAuthUserSession(),
                                              new IAuthProvider[]

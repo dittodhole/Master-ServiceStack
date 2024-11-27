@@ -24,7 +24,7 @@ namespace DoeInc.Ticketing.Web
             SessionFeature.AddSessionIdToRequestFilter(req,
                                                        res,
                                                        null);
-            var customAuth = this.GetCustomAuth(res);
+            var customAuth = this.GetCustomAuth(req);
             if (!customAuth.HasValue)
             {
                 return;
