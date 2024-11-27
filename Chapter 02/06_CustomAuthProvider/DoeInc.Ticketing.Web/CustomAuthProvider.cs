@@ -30,13 +30,13 @@ namespace DoeInc.Ticketing.Web
             }
 
             var authService = req.TryResolve<AuthenticateService>();
-            authService.Request = req;
-            var response = authService.Post(new Authenticate
-                                            {
-                                                provider = CustomAuthProvider.Name,
-                                                UserName = customAuth.Value.Key,
-                                                Password = customAuth.Value.Value
-                                            });
+            authService.Request = req; // this is used in the "Authenticate" method
+            authService.Post(new Authenticate
+                             {
+                                 provider = this.Provider,
+                                 UserName = customAuth.Value.Key,
+                                 Password = customAuth.Value.Value
+                             });
         }
 
         public override object Authenticate(IServiceBase authService,
@@ -44,26 +44,25 @@ namespace DoeInc.Ticketing.Web
                                             Authenticate request)
         {
             var httpReq = authService.Request;
+
+            // we need to read the headers again, as the content is not in "request"
             var customAuth = this.GetCustomAuth(httpReq);
             if (!customAuth.HasValue)
             {
                 throw HttpError.Unauthorized(ErrorMessages.NotAuthenticated);
             }
 
-            var userName = httpReq.GetHeader("X-userName");
-            var password = httpReq.GetHeader("X-password");
-
             return this.Authenticate(authService,
                                      session,
-                                     userName,
-                                     password,
+                                     customAuth.Value.Key,
+                                     customAuth.Value.Value,
                                      request.Continue);
         }
 
         private KeyValuePair<string, string>? GetCustomAuth(IRequest httpReq)
         {
-            var userName = httpReq.GetHeader("X-userName");
-            var password = httpReq.GetHeader("X-password");
+            var userName = httpReq.GetHeader("X-UserName");
+            var password = httpReq.GetHeader("X-Password");
 
             if (string.IsNullOrWhiteSpace(userName) ||
                 string.IsNullOrWhiteSpace(password))
