@@ -19,8 +19,8 @@
     }, false);
     $(eventSource).handleServerEvents({
         handlers: {
-            Say: function(msg, e) {
-                console.log(msg);
+            Say: function(say) {
+                console.log(say);
             }
         }
     });
