@@ -64,8 +64,6 @@ namespace RabbitMQ.ComponentB
 
             Console.ReadLine();
 
-            channel.QueueDelete(queueName);
-
             messageQueueClient.Dispose();
             rabbitMqServer.Dispose();
         }
