@@ -8,17 +8,18 @@ namespace HelloWorld.Website
     {
         public object Any(Hello request)
         {
-            var profiler = Profiler.Current;
-
-            using (profiler.Step("Custom Step"))
+            using (Profiler.Current.Step("Custom Step"))
             {
                 var name = request.Name;
-                var helloResponse = new HelloResponse
-                                    {
-                                        Result = "Hello {0}".Fmt(name)
-                                    };
-
-                return helloResponse;
+                using (Profiler.StepStatic("Inner custom step"))
+                {
+                    var helloResponse = Profiler.Current.Inline(() => new HelloResponse
+                                                                {
+                                                                    Result = "Hello {0}".Fmt(name)
+                                                                },
+                                                                "Inline Step");
+                    return helloResponse;
+                }
             }
         }
     }
