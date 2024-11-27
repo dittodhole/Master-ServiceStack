@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Hello.cs" />
     <Compile Include="HelloResponse.cs" />
-    <Compile Include="Hellos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
