@@ -11,8 +11,8 @@ namespace DoeInc.ServiceStack.Extensions
 
         public void Register(IAppHost appHost)
         {
-            appHost.GlobalRequestFilters.Add(InterceptRequest);
-            appHost.GlobalResponseFilters.Add(InterceptResponse);
+            appHost.GlobalRequestFilters.Add(this.InterceptRequest);
+            appHost.GlobalResponseFilters.Add(this.InterceptResponse);
         }
 
         private void InterceptRequest(IRequest request,
