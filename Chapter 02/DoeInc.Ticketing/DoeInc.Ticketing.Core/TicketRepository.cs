@@ -62,7 +62,16 @@ namespace DoeInc.Ticketing.Core
             var ticket = request.ConvertTo<Ticket>();
             using (var db = this.ConnectionFactory.Open())
             {
-                var success = db.Save(ticket);
+                bool success;
+                if (request.Id <= 0)
+                {
+                    success = db.Save(ticket);
+                }
+                else
+                {
+                    success = db.Update(ticket) == 1;
+                }
+
                 if (!success)
                 {
                     return null;
