@@ -12,7 +12,7 @@ namespace HelloWorld.Website
 {
     public class Global : HttpApplication
     {
-        private const string StopWatchItemsKey = "_requestDurationStopwatch";
+        private const string StopwatchItemsKey = "_requestDurationStopwatch";
 
         protected void Application_Start(object sender,
                                          EventArgs e)
@@ -30,34 +30,46 @@ namespace HelloWorld.Website
                                                 EventArgs e)
         {
             var apiBasePath = string.Concat(this.Request.ApplicationPath,
-                                            ServiceStackHost.Instance.Config.HandlerFactoryPath);
+                                            HostContext.Config.HandlerFactoryPath);
             if (this.Request.FilePath.StartsWith(apiBasePath))
             {
                 return;
             }
 
-            var requestLogger = ServiceStackHost.Instance.TryResolve<IRequestLogger>();
+            var requestLogger = HostContext.TryResolve<IRequestLogger>();
             if (requestLogger != null)
             {
-                this.Context.Items[Global.StopWatchItemsKey] = Stopwatch.StartNew();
+                this.Context.Items[Global.StopwatchItemsKey] = Stopwatch.StartNew();
             }
         }
 
         protected void Application_EndRequest(object src,
                                               EventArgs e)
         {
-            var stopwatch = (Stopwatch) this.Context.Items[Global.StopWatchItemsKey];
-            if (stopwatch != null)
+            var request = HostContext.TryGetCurrentRequest();
+            if (request == null)
             {
-                stopwatch.Stop();
-
-                var requestLogger = ServiceStackHost.Instance.TryResolve<IRequestLogger>();
-                var request = HostContext.GetCurrentRequest();
-                requestLogger.Log(request,
-                                  Global.SerializableQueryString(request.QueryString),
-                                  null,
-                                  stopwatch.Elapsed);
+                return;
             }
+
+            var stopwatch = (Stopwatch) request.GetItem(Global.StopwatchItemsKey);
+            if (stopwatch == null)
+            {
+                return;
+            }
+
+            stopwatch.Stop();
+
+            var requestLogger = request.TryResolve<IRequestLogger>();
+            if (requestLogger == null)
+            {
+                return;
+            }
+
+            requestLogger.Log(request: request,
+                              requestDto: Global.SerializableQueryString(request.QueryString),
+                              response: null,
+                              elapsed: stopwatch.Elapsed);
         }
 
         private static Dictionary<string, string> SerializableQueryString(INameValueCollection queryString)
