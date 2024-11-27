@@ -14,11 +14,11 @@ namespace HelloWorld
 
         public override void Configure(Container container)
         {
-            Profiler.Settings.ProfilerProvider = new CustomProfileProvider();
+            Profiler.Settings.ProfilerProvider = new CustomProfilerProvider();
 
             this.RawHttpHandlers.Add(request =>
                                      {
-                                         CustomProfileProvider.SetRequest(request);
+                                         CustomProfilerProvider.SetRequest(request);
 
                                          Profiler.Start();
 

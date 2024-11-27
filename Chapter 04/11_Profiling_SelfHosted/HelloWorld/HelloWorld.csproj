@@ -63,7 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHost.cs" />
-    <Compile Include="CustomProfileProvider.cs" />
+    <Compile Include="CustomProfilerProvider.cs" />
+    <Compile Include="CustomProfilerProvider.HelperMethods.cs" />
     <Compile Include="HelloResponse.cs" />
     <Compile Include="HelloService.cs" />
     <Compile Include="Program.cs" />
