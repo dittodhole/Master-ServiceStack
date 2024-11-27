@@ -12,8 +12,6 @@ namespace HelloWorld
                                 IAny<Hello>,
                                 IAny<ValidationRuleSet>
     {
-        public IValidator<Hello> HelloValidator { get; set; }
-
         public object Any(Hello request)
         {
             var result = "Hello {0}".Fmt(request.Name);
@@ -58,43 +56,48 @@ namespace HelloWorld
                 throw HttpError.NotFound("Validator for type {0} cannot be found".Fmt(typeName));
             }
 
+            return this.GetValdationRuleSetResponse(type,
+                                                    validator);
+        }
+
+        private object GetValdationRuleSetResponse(Type type,
+                                                   IValidator validator)
+        {
             var instance = type.CreateInstance();
             var validationContext = new ValidationContext(instance);
 
             var validatorDescriptor = validator.CreateDescriptor();
-            var validationRules = validatorDescriptor.GetMembersWithValidators()
-                                                     .Select(arg =>
-                                                             {
-                                                                 var propertyName = arg.Key;
+            var rules = validatorDescriptor.GetMembersWithValidators()
+                                           .Select(arg =>
+                                                   {
+                                                       var propertyName = arg.Key;
 
-                                                                 var validationRule = HelloService.GetValidationRule(propertyName,
-                                                                                                                     validatorDescriptor,
-                                                                                                                     validationContext);
-
-                                                                 return validationRule;
-                                                             })
-                                                     .ToList();
+                                                       return this.GetValidationRulesOfProperty(propertyName,
+                                                                                                validatorDescriptor,
+                                                                                                validationContext);
+                                                   })
+                                           .ToList();
             var response = new ValidationRuleSetResponse
                            {
-                               ValidationRules = validationRules
+                               Rules = rules
                            };
 
             return response;
         }
 
-        private static ValidationRule GetValidationRule(string propertyName,
-                                                        IValidatorDescriptor validatorDescriptor,
-                                                        ValidationContext validationContext)
+        private ValidationRulesOfProperty GetValidationRulesOfProperty(string propertyName,
+                                                                       IValidatorDescriptor validatorDescriptor,
+                                                                       ValidationContext validationContext)
         {
             // TODO IDelegateValidator is not supported in this scenario
 
             var validationRules = validatorDescriptor.GetRulesForMember(propertyName)
                                                      .OfType<PropertyRule>()
-                                                     .SelectMany(rule => HelloService.GetValidationRules(validationContext,
-                                                                                                         rule,
-                                                                                                         propertyName))
+                                                     .SelectMany(rule => this.GetValidationRules(validationContext,
+                                                                                                 rule,
+                                                                                                 propertyName))
                                                      .ToList();
-            var validationRule = new ValidationRule
+            var validationRule = new ValidationRulesOfProperty
                                  {
                                      PropertyName = propertyName,
                                      ValidationRules = validationRules
@@ -102,18 +105,18 @@ namespace HelloWorld
             return validationRule;
         }
 
-        private static IEnumerable<string> GetValidationRules(ValidationContext validationContext,
-                                                              PropertyRule rule,
-                                                              string propertyName)
+        private IEnumerable<string> GetValidationRules(ValidationContext validationContext,
+                                                       PropertyRule rule,
+                                                       string propertyName)
         {
             var propertyContext = new PropertyValidatorContext(validationContext,
                                                                rule,
                                                                propertyName);
             propertyContext.MessageFormatter.AppendPropertyName(propertyName);
 
-            var validationRules = rule.Validators.Select(propertyValidator =>
+            var validationRules = rule.Validators.Select(validator =>
                                                          {
-                                                             var comparisonValidator = propertyValidator as IComparisonValidator;
+                                                             var comparisonValidator = validator as IComparisonValidator;
                                                              if (comparisonValidator != null)
                                                              {
                                                                  propertyContext.MessageFormatter.AppendArgument("PropertyValue",
@@ -122,7 +125,7 @@ namespace HelloWorld
 
                                                              // TODO add more arguments
 
-                                                             var messageTemplate = propertyValidator.ErrorMessageSource.GetString();
+                                                             var messageTemplate = validator.ErrorMessageSource.GetString();
                                                              var message = propertyContext.MessageFormatter.BuildMessage(messageTemplate);
 
                                                              return message;
