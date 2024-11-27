@@ -54,10 +54,6 @@
       <HintPath>..\packages\ServiceStack.4.0.40\lib\net40\ServiceStack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ServiceStack.Api.Swagger, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Api.Swagger.4.0.40\lib\net40\ServiceStack.Api.Swagger.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ServiceStack.Caching.AwsDynamoDb, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Caching.AwsDynamoDb.4.0.40\lib\net40\ServiceStack.Caching.AwsDynamoDb.dll</HintPath>
       <Private>True</Private>
@@ -168,10 +164,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="LegacySession.cs" />
-    <Compile Include="LegacySessionFactory.cs" />
-    <Compile Include="LegacySessionHttpHandlerFactory.cs" />
-    <Compile Include="LegacySessionHttpHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>

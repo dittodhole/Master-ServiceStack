@@ -42,7 +42,7 @@ namespace DoeInc.Ticketing.ServiceInterface
                                                                   () => this.Repository.Read(request));
             if (ticket == null)
             {
-                return HttpError.NotFound("The requested ticket instance cannot be found");
+                throw HttpError.NotFound("The requested ticket instance cannot be found");
             }
             return ticket;
         }
@@ -58,6 +58,11 @@ namespace DoeInc.Ticketing.ServiceInterface
         public object Post(StoreTicket request)
         {
             var ticket = this.Repository.Store(request);
+            if (ticket == null)
+            {
+                throw HttpError.NotFound("The ticket instance cannot be found for update");
+            }
+
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
                                          UrnId.Create<GetTickets>(string.Empty));
