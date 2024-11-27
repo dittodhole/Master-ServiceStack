@@ -30,9 +30,9 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteTicket request)
         {
-            var ticketId = request.Id;
             var userAuthId = this.GetSession()
                                  .UserAuthId;
+            var ticketId = request.Id;
 
             if (this.Repository.Delete(ticketId,
                                        userAuthId))
@@ -45,9 +45,9 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public object Get(GetTicket request)
         {
-            var ticketId = request.Id;
             var userAuthId = this.GetSession()
                                  .UserAuthId;
+            var ticketId = request.Id;
 
             var ticket = this.Request.ToOptimizedResultUsingCache(this.Cache,
                                                                   UrnId.Create<GetTicket>(ticketId),
@@ -64,7 +64,8 @@ namespace DoeInc.Ticketing.ServiceInterface
         public object Get(GetTickets request)
         {
             var userAuthId = this.GetSession()
-                                 .Id;
+                                 .UserAuthId;
+
             var tickets = this.Request.ToOptimizedResultUsingCache(this.Cache,
                                                                    UrnId.Create<GetTickets>(userAuthId),
                                                                    () => this.Repository.Read(userAuthId));
@@ -75,6 +76,7 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var userAuthId = this.GetSession()
                                  .UserAuthId;
+
             var ticket = request.ConvertTo<Ticket>();
             ticket.ProcessorUserAuthId = userAuthId;
 
@@ -95,6 +97,7 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var userAuthId = this.GetSession()
                                  .UserAuthId;
+
             var ticket = request.ConvertTo<Ticket>();
             ticket.ProcessorUserAuthId = userAuthId;
 

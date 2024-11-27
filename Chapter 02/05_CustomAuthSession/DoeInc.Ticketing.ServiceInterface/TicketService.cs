@@ -62,6 +62,7 @@ namespace DoeInc.Ticketing.ServiceInterface
         public object Get(GetTickets request)
         {
             var userAuthId = this.UserSession.UserAuthId;
+
             var tickets = this.Request.ToOptimizedResultUsingCache(this.Cache,
                                                                    UrnId.Create<GetTickets>(userAuthId),
                                                                    () => this.Repository.Read(userAuthId));
@@ -71,6 +72,7 @@ namespace DoeInc.Ticketing.ServiceInterface
         public object Post(StoreTicket request)
         {
             var userAuthId = this.UserSession.UserAuthId;
+
             var ticket = request.ConvertTo<Ticket>();
             ticket.ProcessorUserAuthId = userAuthId;
 
@@ -90,6 +92,7 @@ namespace DoeInc.Ticketing.ServiceInterface
         public object Put(StoreTicket request)
         {
             var userAuthId = this.UserSession.UserAuthId;
+
             var ticket = request.ConvertTo<Ticket>();
             ticket.ProcessorUserAuthId = userAuthId;
 
