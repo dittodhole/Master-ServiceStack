@@ -12,15 +12,6 @@ namespace DoeInc.ServiceStack.Extensions
         public const string CacheKeyPrefix = "__throttleCounter";
 
         private readonly Dictionary<Type, ThrottleRestrictionAttribute> _throttleRestrictionAttributes = new Dictionary<Type, ThrottleRestrictionAttribute>();
-        private readonly HashSet<string> _cacheKeys = new HashSet<string>();
-
-        internal IEnumerable<string> CacheKeys
-        {
-            get
-            {
-                return this._cacheKeys;
-            }
-        }
 
         public void Register(IAppHost appHost)
         {
@@ -94,8 +85,6 @@ namespace DoeInc.ServiceStack.Extensions
                 var key = this.GetCacheKey(request,
                                            durationScope.DurationAbbreviation);
 
-                this._cacheKeys.Add(key);
-
                 var counter = cacheClient.Get<int>(key);
 
                 TimeSpan expiresIn;
@@ -133,7 +122,7 @@ namespace DoeInc.ServiceStack.Extensions
             return key;
         }
 
-        internal ThrottleCounter CreateThrottleCounter(string cacheKey)
+        internal static ThrottleCounter CreateThrottleCounter(string cacheKey)
         {
             var cacheKeyParts = cacheKey.Split('|');
             var prefix = cacheKeyParts.ElementAt(0);
