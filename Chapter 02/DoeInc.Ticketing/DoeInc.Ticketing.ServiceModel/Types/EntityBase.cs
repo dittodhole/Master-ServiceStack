@@ -1,8 +1,11 @@
-﻿namespace DoeInc.Ticketing.ServiceModel.Types
+﻿using ServiceStack.DataAnnotations;
+
+namespace DoeInc.Ticketing.ServiceModel.Types
 {
     public abstract class EntityBase
     {
-        public string Id { get; set; }
+        [AutoIncrement]
+        public int Id { get; set; }
         public string RowVersion { get; set; }
     }
 }

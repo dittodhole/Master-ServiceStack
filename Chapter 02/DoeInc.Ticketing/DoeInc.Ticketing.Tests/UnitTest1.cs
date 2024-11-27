@@ -1,6 +1,10 @@
-﻿using DoeInc.Ticketing.ServiceInterface;
+﻿using DoeInc.Ticketing.Core;
+using DoeInc.Ticketing.ServiceInterface;
+using DoeInc.Ticketing.ServiceModel;
 using NUnit.Framework;
 using ServiceStack;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 using ServiceStack.Testing;
 
 namespace DoeInc.Ticketing.Tests
@@ -16,7 +20,14 @@ namespace DoeInc.Ticketing.Tests
                             {
                                 ConfigureContainer = container =>
                                                      {
-                                                         //Add your IoC dependencies here
+                                                         container.RegisterAutoWired<CommentRepository>()
+                                                                  .InitializedBy((container1,
+                                                                                  repository) => repository.Initialize());
+                                                         container.RegisterAutoWired<TicketRepository>()
+                                                                  .InitializedBy((container1,
+                                                                                  repository) => repository.Initialize());
+                                                         container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
+                                                                                                                                      SqliteDialect.Provider));
                                                      }
                             }.Init();
         }
@@ -30,6 +41,15 @@ namespace DoeInc.Ticketing.Tests
         [Test]
         public void TestMethod1()
         {
+            var ticketRepository = this._appHost.Resolve<TicketRepository>();
+            var storeTicket = new StoreTicket
+                              {
+                                  Title = "hello"
+                              };
+            var ticket = ticketRepository.Store(storeTicket);
+
+            Assert.That(ticket.Id,
+                        Is.GreaterThan(0));
             /*
             var service = appHost.Container.Resolve<MyServices>();
 
