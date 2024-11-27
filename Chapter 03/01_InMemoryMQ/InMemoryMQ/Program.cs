@@ -10,7 +10,27 @@ namespace InMemoryMQ
         private static void Main(string[] args)
         {
             var inMemoryTransientMessageFactory = new InMemoryTransientMessageFactory();
+
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
+            messageService.RegisterHandler<HelloRequest>(m =>
+            {
+                var helloRequest = m.GetBody();
+                var name = helloRequest.Name;
+                var helloResponse = new HelloResponse
+                {
+                    Result = "Hello " + name
+                };
+
+                return helloResponse;
+            });
+            messageService.RegisterHandler<HelloResponse>(m =>
+            {
+                var helloResponse = m.GetBody();
+                helloResponse.Result.Print();
+
+                return null;
+            });
+            messageService.Start();
 
             Task.Run(() =>
                      {
@@ -27,27 +47,6 @@ namespace InMemoryMQ
                          }
                          ;
                      });
-
-            messageService.RegisterHandler<HelloRequest>(m =>
-                                                         {
-                                                             var helloRequest = m.GetBody();
-                                                             var name = helloRequest.Name;
-                                                             var helloResponse = new HelloResponse
-                                                                                 {
-                                                                                     Result = "Hello " + name
-                                                                                 };
-
-                                                             return helloResponse;
-                                                         });
-            messageService.RegisterHandler<HelloResponse>(m =>
-                                                          {
-                                                              var helloResponse = m.GetBody();
-                                                              helloResponse.Result.Print();
-
-                                                              return null;
-                                                          });
-
-            messageService.Start();
 
             Console.ReadLine();
         }
