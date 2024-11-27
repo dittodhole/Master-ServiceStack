@@ -5,7 +5,7 @@ namespace HelloWorld
 {
     public class HelloService : IService,
                                 IAny<Hello>,
-                                IAny<Hello[]>
+                                IAny<Hellos>
     {
         public object Any(Hello request)
         {
@@ -14,7 +14,7 @@ namespace HelloWorld
             return helloResponse;
         }
 
-        public object Any(Hello[] request)
+        public object Any(Hellos request)
         {
             return request.Map(HelloService.DoWork);
         }

@@ -11,7 +11,7 @@ namespace HelloWorld.Client
         {
             using (var jsonServiceClient = new JsonServiceClient("http://localhost:5555"))
             {
-                var requests = new[]
+                var requests = new Hellos
                                {
                                    new Hello
                                    {
