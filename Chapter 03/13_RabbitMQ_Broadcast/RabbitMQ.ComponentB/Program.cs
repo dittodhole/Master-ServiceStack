@@ -24,39 +24,40 @@ namespace RabbitMQ.ComponentB
                               CustomExchangeNames.FanoutExchangeName,
                               QueueNames<Hello>.In);
             var sharedQueue = new SharedQueue<BasicGetResult>();
-            var rabbitMqBasicConsumer = new RabbitMqBasicConsumer(channel, sharedQueue);
+            var rabbitMqBasicConsumer = new RabbitMqBasicConsumer(channel,
+                                                                  sharedQueue);
             channel.BasicConsume(queueName,
-                                    false,
-                                    rabbitMqBasicConsumer);
+                                 false,
+                                 rabbitMqBasicConsumer);
 
             Task.Run(() =>
-                        {
-                            while (true)
-                            {
-                                try
-                                {
-                                    var basicMsg = sharedQueue.Dequeue();
-                                    var message = basicMsg.ToMessage<Hello>();
-                                    var hello = message.GetBody();
-                                    var name = hello.Name;
-                                    var result = "Hello {0}".Fmt(name);
+                     {
+                         while (true)
+                         {
+                             try
+                             {
+                                 var basicMsg = sharedQueue.Dequeue();
+                                 var message = basicMsg.ToMessage<Hello>();
+                                 var hello = message.GetBody();
+                                 var name = hello.Name;
+                                 var result = "Hello {0}".Fmt(name);
 
-                                    result.Print();
-                                }
-                                catch (EndOfStreamException endOfStreamException)
-                                {
-                                    // this is ok
-                                }
-                                catch (OperationInterruptedException operationInterruptedException)
-                                {
-                                    // this is ok
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw;
-                                }
-                            }
-                        });
+                                 result.Print();
+                             }
+                             catch (EndOfStreamException endOfStreamException)
+                             {
+                                 // this is ok
+                             }
+                             catch (OperationInterruptedException operationInterruptedException)
+                             {
+                                 // this is ok
+                             }
+                             catch (Exception ex)
+                             {
+                                 throw;
+                             }
+                         }
+                     });
 
             "listening for hello messages".Print();
 
