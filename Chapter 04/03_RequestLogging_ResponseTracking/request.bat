@@ -1,0 +1,1 @@
+..\..\Resources\curl.exe -X GET http://localhost:5555/hello/John --header "Content-Type: application/json"
