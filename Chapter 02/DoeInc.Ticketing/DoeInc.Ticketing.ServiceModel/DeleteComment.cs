@@ -4,7 +4,7 @@ namespace DoeInc.Ticketing.ServiceModel
 {
     public class DeleteComment : IReturnVoid
     {
-        public string Id { get; set; }
-        public string TicketId { get; set; }
+        public int Id { get; set; }
+        public int TicketId { get; set; }
     }
 }

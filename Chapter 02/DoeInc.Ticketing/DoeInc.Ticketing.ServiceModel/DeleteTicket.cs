@@ -4,6 +4,6 @@ namespace DoeInc.Ticketing.ServiceModel
 {
     public class DeleteTicket : IReturnVoid
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

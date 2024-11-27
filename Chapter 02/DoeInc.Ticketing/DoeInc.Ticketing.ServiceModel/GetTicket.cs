@@ -5,6 +5,6 @@ namespace DoeInc.Ticketing.ServiceModel
 {
     public class GetTicket : IReturn<Ticket>
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

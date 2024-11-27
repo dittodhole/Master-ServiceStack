@@ -2,7 +2,7 @@
 {
     public class Comment : EntityBase
     {
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
         public string Text { get; set; }
         public string Creator { get; set; }
     }

@@ -6,6 +6,6 @@ namespace DoeInc.Ticketing.ServiceModel
 {
     public class GetComments : IReturn<List<Comment>>
     {
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
     }
 }
