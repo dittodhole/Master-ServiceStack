@@ -17,28 +17,29 @@ namespace InMemoryMQ
 
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
 
-            messageService.RegisterHandler<Hello>(m =>
+            messageService.RegisterHandler<Hello>(message =>
                                                   {
-                                                      "consumer called for the {0} time".Print(m.RetryAttempts);
+                                                      "consumer called for the {0} time".Print(message.RetryAttempts);
 
-                                                      if (m.RetryAttempts == 0)
+                                                      if (message.RetryAttempts == 0)
                                                       {
-                                                          throw new Exception("causing at least one retry");
+                                                          throw new Exception();
                                                       }
-                                                      var hello = m.GetBody();
+
+                                                      var hello = message.GetBody();
                                                       var name = hello.Name;
                                                       var helloResponse = new HelloResponse
                                                                           {
                                                                               Result = "Hello {0}".Fmt(name)
                                                                           };
 
-                                                      "conumser on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
+                                                      "consumer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
 
                                                       return helloResponse;
                                                   });
-            messageService.RegisterHandler<HelloResponse>(m =>
+            messageService.RegisterHandler<HelloResponse>(message =>
                                                           {
-                                                              var helloResponse = m.GetBody();
+                                                              var helloResponse = message.GetBody();
                                                               helloResponse.Result.Print();
 
                                                               return null;
