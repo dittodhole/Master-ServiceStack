@@ -8,7 +8,7 @@ namespace DoeInc.Ticketing.ServiceModel
         public string Id { get; set; }
         public string RowVersion { get; set; }
         public string Title { get; set; }
-        public string ProcessorId { get; set; }
+        public string Processor { get; set; }
         public Status Status { get; set; }
     }
 }
