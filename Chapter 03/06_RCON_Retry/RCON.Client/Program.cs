@@ -21,7 +21,7 @@ namespace RCON.Client
 
             var hello = new Hello
             {
-                Name = i.ToString()
+                Name = "John Doe"
             };
             client.Call(hello,
                         Program.CallbackAfterHello);

@@ -2,7 +2,7 @@
 using System.Web;
 using ServiceStack;
 
-namespace DoeInc.Ticketing.Web
+namespace ServerEvents
 {
     public class Global : HttpApplication
     {

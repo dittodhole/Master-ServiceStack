@@ -1,5 +1,5 @@
 ﻿using System;
-using ServiceStack.Text;
+using ServiceStack;
 
 namespace RedisMQ.ServiceB
 {
