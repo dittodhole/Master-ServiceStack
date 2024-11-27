@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.Text;
 
@@ -11,25 +12,38 @@ namespace ServerEvents.Client
             var serverEventsClient = new ServerEventsClient("http://localhost:54392");
             serverEventsClient.OnMessage = serverEventMessage =>
                                            {
-                                               serverEventMessage.PrintDump();
+                                               "OnMessage: {0}".Print(serverEventMessage);
                                            };
             serverEventsClient.OnCommand = serverEventMessage =>
                                            {
-                                               serverEventMessage.PrintDump();
+                                               "OnCommand: {0}".Print(serverEventMessage);
                                            };
-            serverEventsClient.OnConnect = serverEventMessage =>
+            serverEventsClient.OnConnect = serverEventConnect =>
                                            {
-                                               serverEventMessage.PrintDump();
+                                               "OnConnect: {0}".Print(serverEventConnect);
                                            };
             serverEventsClient.OnException = exception =>
                                              {
-                                                 exception.PrintDump();
+                                                 "OnException: {0}".Print(exception);
                                              };
             serverEventsClient.OnHeartbeat = () =>
                                              {
                                                  "heartbeat".Print();
                                              };
             serverEventsClient.Connect();
+
+            serverEventsClient.RegisterHandlers(new Dictionary<string, ServerEventCallback>
+                                                {
+                                                    {
+                                                        "Say", (source,
+                                                                message) =>
+                                                               {
+                                                                   var say = message.Json.FromJson<Say>();
+                                                                   say.PrintDump();
+                                                               }
+                                                    }
+                                                });
+            serverEventsClient.RegisterReceiver<CustomReceiver>();
 
             "listening to the server".Print();
 
