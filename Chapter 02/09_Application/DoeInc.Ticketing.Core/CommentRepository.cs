@@ -54,6 +54,19 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
+        public Comment Read(int ticketId,
+                            int id)
+        {
+            using (var db = this.ConnectionFactory.Open())
+            {
+                return db.Single<Comment>(new
+                                          {
+                                              TicketId = ticketId,
+                                              Id = id
+                                          });
+            }
+        }
+
         public Comment Store(Comment comment)
         {
             bool success;
@@ -67,7 +80,8 @@ namespace DoeInc.Ticketing.Core
                 else
                 {
                     // this is need for not loosing properties of initial storing (eg creator)
-                    comment.PopulateWith(db.SingleById<Comment>(comment.Id));
+                    comment = db.SingleById<Comment>(comment.Id)
+                                .PopulateWithNonDefaultValues(comment);
 
                     success = db.Update(comment) == 1;
                     if (success)

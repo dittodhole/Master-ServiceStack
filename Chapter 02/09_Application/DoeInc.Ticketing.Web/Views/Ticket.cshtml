@@ -93,9 +93,120 @@
     <div class="form-group">
         <div class="col-sm-12">
             <button type="submit"
-                    class="btn btn-default">
-                Save
+                    class="btn btn-default pull-right">
+                Save Ticket
             </button>
         </div>
     </div>
 </form>
+
+<h3>Comments</h3>
+<div class="row">
+    <div class="col-md-12"
+         id="commentsContainer">
+        <script type="text/javascript">
+            var comments = {
+                Comments: ko.observableArray(),
+                SetComments: function(comments) {
+                    this.Comments = ko.observableArray(comments);
+                },
+                AddComment: function(comment) {
+                    this.Comments.push(comment);
+                },
+                RemoveComment: function(comment) {
+                    this.Comments.remove(function(arg) {
+                        return arg.Id == comment.Id;
+                    });
+                }
+            };
+            $(function() {
+                var $commentsContainer = $('commentsContainer');
+                var $createCommentButton = $('#createCommentButton');
+                var $Comment = $('#Comment');
+                $createCommentButton.on('click', function(event) {
+                    event.preventDefault();
+                    var comment = {
+                        Text: $Comment.val(),
+                        TicketId: @Model.Id
+                    };
+
+                    $.postJSON('@(new StoreComment
+                                  {
+                                      TicketId = Model.Id
+                                  }.ToPostUrl())', comment)
+                        .success(function(response) {
+                            comments.AddComment(response);
+                            $Comment.val('');
+                        });
+                });
+                $.getJSON('@(new GetComments
+                             {
+                                 TicketId = Model.Id
+                             }.ToGetUrl())', function(response) {
+                    comments.SetComments(response);
+                    ko.applyBindings(comments, $commentsContainer.get(0));
+                });
+            });
+
+            function deleteComment(comment, event) {
+                var baseUrl = '@(new DeleteComment
+                                 {
+                                     TicketId = Model.Id
+                                 }.ToDeleteUrl())';
+                var url = baseUrl.replace('0', comment.Id);
+                $.postJSON(url, comment, {
+                    '@HttpHeaders.XHttpMethodOverride': '@HttpMethods.Delete'
+                }).success(function(response) {
+                    if (!response) {
+                        alert('Wanted to delete a comment from another user?');
+                        return;
+                    }
+                    comments.RemoveComment(response);
+                });
+                return false;
+            }
+        </script>
+        <!-- ko foreach: Comments -->
+        <div class="row">
+            <div class="col-md-10">
+                <span data-bind="text: Text"></span>
+            </div>
+            <div class="col-md-2">
+                <button type="submit"
+                        class="btn btn-default pull-right"
+                        data-bind="event: { click: deleteComment }">
+                    <span class="glyphicon glyphicon-trash"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-2">
+        Comment
+    </div>
+    <div class="col-md-10">
+        @Html.TextArea("Comment",
+                       string.Empty,
+                       new Dictionary<string, object>
+                       {
+                           {
+                               "placeholder", "Enter a comment"
+                           },
+                           {
+                               "class", "form-control"
+                           }
+                       })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-12">
+        <button type="submit"
+                id="createCommentButton"
+                class="btn btn-default pull-right">
+            Create Comment
+        </button>
+    </div>
+</div>

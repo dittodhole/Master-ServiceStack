@@ -12,12 +12,13 @@
     </style>
     <script type="text/javascript">
         (function($) {
-            $.postJSON = function(url, data) {
+            $.postJSON = function(url, data, headers) {
                 var o = {
                     url: url,
                     type: "POST",
                     dataType: "json",
-                    contentType: 'application/json; charset=utf-8'
+                    contentType: 'application/json; charset=utf-8',
+                    headers: headers || {}
                 };
                 if (data !== undefined) {
                     o.data = JSON.stringify(data);

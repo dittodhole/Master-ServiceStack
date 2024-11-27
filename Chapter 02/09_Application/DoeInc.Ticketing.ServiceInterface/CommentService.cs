@@ -10,7 +10,7 @@ namespace DoeInc.Ticketing.ServiceInterface
                                   IGet<GetComments>,
                                   IPost<StoreComment>,
                                   IPut<StoreComment>,
-                                  IDeleteVoid<DeleteComment>
+                                  IDelete<DeleteComment>
     {
         private readonly CommentRepository _commentRepository;
 
@@ -27,20 +27,25 @@ namespace DoeInc.Ticketing.ServiceInterface
             }
         }
 
-        public void Delete(DeleteComment request)
+        public object Delete(DeleteComment request)
         {
             var ticketId = request.TicketId;
             var commentId = request.Id;
             var userAuthId = this.GetSession()
                                  .UserAuthId;
 
+            var comment = this.Repository.Read(ticketId,
+                                               commentId);
             if (this.Repository.Delete(ticketId,
                                        commentId,
                                        userAuthId))
             {
                 this.Request.RemoveFromCache(this.Cache,
                                              UrnId.Create<GetComments>(ticketId));
+                return comment;
             }
+
+            return null;
         }
 
         public object Get(GetComments request)
@@ -56,6 +61,8 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var ticketId = request.TicketId;
             var comment = request.ConvertTo<Comment>();
+            comment.CreatorUserAuthId = this.GetSession()
+                                            .UserAuthId;
 
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetComments>(ticketId));
@@ -66,8 +73,6 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var ticketId = request.TicketId;
             var comment = request.ConvertTo<Comment>();
-            comment.CreatorUserAuthId = this.GetSession()
-                                            .UserAuthId;
 
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetComments>(ticketId));
