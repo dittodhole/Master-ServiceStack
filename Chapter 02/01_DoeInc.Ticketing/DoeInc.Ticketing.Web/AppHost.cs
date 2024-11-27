@@ -50,12 +50,10 @@ namespace DoeInc.Ticketing.Web
 
             container.RegisterAutoWired<CommentRepository>()
                      .InitializedBy((container1,
-                                     repository) => repository.Initialize())
-                     .ReusedWithin(ReuseScope.Container);
+                                     repository) => repository.Initialize());
             container.RegisterAutoWired<TicketRepository>()
                      .InitializedBy((container1,
-                                     repository) => repository.Initialize())
-                     .ReusedWithin(ReuseScope.Container);
+                                     repository) => repository.Initialize());
             container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
                                                                                          SqliteDialect.Provider));
 
