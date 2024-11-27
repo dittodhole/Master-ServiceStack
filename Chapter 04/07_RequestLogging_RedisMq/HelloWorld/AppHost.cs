@@ -1,4 +1,5 @@
-﻿using Funq;
+﻿using System;
+using Funq;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.Messaging.Redis;
@@ -21,7 +22,7 @@ namespace HelloWorld
 
             this.Plugins.Add(new RequestLogsFeature
                              {
-                                 RequestLogger = new MessageServiceRequestLogger()
+                                 RequestLogger = new MessageServiceRequestLogger("Hello World Service on {0}".Fmt(Environment.MachineName))
                              });
         }
     }
