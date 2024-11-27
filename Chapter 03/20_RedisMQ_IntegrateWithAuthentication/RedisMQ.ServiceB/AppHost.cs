@@ -45,8 +45,9 @@ namespace RedisMQ.ServiceB
                                                                         {
                                                                             Verb = HttpMethods.Post
                                                                         };
-                                                     basicRequest.Headers["X-" + SessionFeature.SessionId] = message.GetBody()
-                                                                                                                    .SessionId;
+                                                     basicRequest.Headers.Set("X-" + SessionFeature.SessionId,
+                                                                              message.GetBody()
+                                                                                     .SessionId);
                                                      var response = this.ServiceController.ExecuteMessage(message,
                                                                                                           basicRequest);
 

@@ -13,7 +13,7 @@ namespace RedisMQ.ServiceB
             var session = this.GetSession();
             var name = "{0} {1}".Fmt(session.FirstName,
                                      session.LastName);
-            var result = "Hello {0}".Fmt(name);
+            var result = "Hello {0}!".Fmt(name);
 
             result.Print();
         }
