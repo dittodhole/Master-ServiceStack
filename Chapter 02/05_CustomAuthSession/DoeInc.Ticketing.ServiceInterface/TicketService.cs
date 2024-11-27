@@ -53,7 +53,7 @@ namespace DoeInc.Ticketing.ServiceInterface
                                                                                              userAuthId));
             if (ticket == null)
             {
-                return HttpError.NotFound("The requested ticket instance cannot be found");
+                throw HttpError.NotFound("The requested ticket instance cannot be found");
             }
 
             return ticket;
@@ -75,11 +75,12 @@ namespace DoeInc.Ticketing.ServiceInterface
 
             var ticket = request.ConvertTo<Ticket>();
             ticket.ProcessorUserAuthId = userAuthId;
+            ticket.CreatorUserAuthId = userAuthId;
 
             ticket = this.Repository.Store(ticket);
             if (ticket == null)
             {
-                return HttpError.NotFound("The ticket instance cannot be found for update");
+                throw HttpError.NotFound("The ticket instance cannot be found for update");
             }
 
             this.Request.RemoveFromCache(this.Cache,

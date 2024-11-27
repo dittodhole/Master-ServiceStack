@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DoeInc.Ticketing.ServiceModel;
+﻿using System.Collections.Generic;
 using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 using ServiceStack.Data;
@@ -33,51 +31,57 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
-        public void Delete(DeleteComment request)
+        public bool Delete(int ticketId,
+                           int commentId,
+                           string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
-                db.Delete<Comment>(new
-                                   {
-                                       request.Id,
-                                       request.TicketId
-                                   });
+                return db.Delete<Comment>(new
+                                          {
+                                              Id = commentId,
+                                              TicketId = ticketId,
+                                              CreatorUserAuthId = userAuthId
+                                          }) > 0;
             }
         }
 
-        public List<Comment> Read(GetComments request)
+        public List<Comment> Read(int ticketId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
-                return db.Select<Comment>(arg => arg.TicketId == request.TicketId);
+                return db.Select<Comment>(arg => arg.TicketId == ticketId);
             }
         }
 
-        public Comment Store(StoreComment request)
+        public Comment Store(Comment comment)
         {
-            var comment = request.ConvertTo<Comment>();
+            bool success;
+
             using (var db = this.ConnectionFactory.Open())
             {
-                bool success;
-                if (request.Id <= 0)
+                if (comment.Id <= 0)
                 {
                     success = db.Save(comment);
                 }
                 else
                 {
+                    // this is need for not loosing properties of initial storing (eg creator)
+                    comment.PopulateWith(db.SingleById<Comment>(comment.Id));
+
                     success = db.Update(comment) == 1;
                     if (success)
                     {
-                        comment = db.SingleById<Comment>(request.Id);
+                        comment = db.SingleById<Comment>(comment.Id);
                     }
                 }
-
-                if (!success)
-                {
-                    return null;
-                }
             }
-            return comment;
+
+            if (success)
+            {
+                return comment;
+            }
+            return null;
         }
     }
 }
