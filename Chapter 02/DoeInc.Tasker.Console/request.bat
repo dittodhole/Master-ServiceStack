@@ -1,0 +1,1 @@
+..\..\Resources\curl.exe -G http://localhost:1337/hello -c cookies.txt -b cookies.txt
