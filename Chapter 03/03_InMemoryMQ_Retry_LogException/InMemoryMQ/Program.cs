@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.Text;
@@ -55,22 +54,23 @@ namespace InMemoryMQ
                                                           });
             messageService.Start();
 
-            Task.Run(() =>
-                     {
-                         var messageProducer = inMemoryTransientMessageFactory.CreateMessageProducer();
-                         for (var i = 0;
-                              i < 10;
-                              i++)
-                         {
-                             var hello = new Hello
-                                         {
-                                             Name = i.ToString()
-                                         };
-                             messageProducer.Publish(hello);
-                         }
-                     });
+            using (var messageProducer = inMemoryTransientMessageFactory.CreateMessageProducer())
+            {
+                for (var i = 0;
+                     i < 10;
+                     i++)
+                {
+                    var hello = new Hello
+                                {
+                                    Name = i.ToString()
+                                };
+                    messageProducer.Publish(hello);
+                }
+            }
 
             Console.ReadLine();
+
+            messageService.Stop();
         }
 
         public class Hello : IReturn<HelloResponse>
