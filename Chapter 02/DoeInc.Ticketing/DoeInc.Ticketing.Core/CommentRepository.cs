@@ -58,7 +58,20 @@ namespace DoeInc.Ticketing.Core
             var comment = request.ConvertTo<Comment>();
             using (var db = this.ConnectionFactory.Open())
             {
-                var success = db.Save(comment);
+                bool success;
+                if (request.Id <= 0)
+                {
+                    success = db.Save(comment);
+                }
+                else
+                {
+                    success = db.Update(comment) == 1;
+                    if (success)
+                    {
+                        comment = db.SingleById<Comment>(request.Id);
+                    }
+                }
+
                 if (!success)
                 {
                     return null;

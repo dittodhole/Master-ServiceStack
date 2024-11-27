@@ -70,6 +70,10 @@ namespace DoeInc.Ticketing.Core
                 else
                 {
                     success = db.Update(ticket) == 1;
+                    if (success)
+                    {
+                        ticket = db.SingleById<Ticket>(request.Id);
+                    }
                 }
 
                 if (!success)
