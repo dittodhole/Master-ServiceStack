@@ -11,7 +11,7 @@ namespace HelloWorld
             var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
             Licensing.RegisterLicenseFromFileIfExists(licensePath);
 
-            var url = "http://*:1337/";
+            var url = "http://*:5555/";
             var appHost = new AppHost();
             appHost.Init();
             appHost.Start(url);
