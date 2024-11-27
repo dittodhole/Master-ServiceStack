@@ -78,7 +78,7 @@ namespace DoeInc.ServiceStack.Extensions
                 request = HostContext.GetCurrentRequest();
             }
 
-            return request.GetItemStringValue(RequestIdentifierKey);
+            return request.GetRequestIdentifier();
         }
     }
 }
