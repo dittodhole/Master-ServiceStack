@@ -1,5 +1,6 @@
 ﻿using System;
 using RedisMQ.Models;
+using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.Text;
 

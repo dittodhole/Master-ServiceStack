@@ -21,6 +21,13 @@ namespace RedisMQ.ServiceA
                                                                   UserName = "johndoe",
                                                                   Password = "password"
                                                               });
+
+                // you can now assign the sessionId directly to the client
+                // and objects, implementing IHasSessionId, will get automatically
+                // assigned the session upon request. unfortunately MQ clients
+                // do not offer this behaviour, so we need to do populating
+                // ourselfs.
+                //jsonServiceClient.SessionId = authenticateResponse.SessionId;
             }
 
             var redisClientManager = new BasicRedisClientManager();
