@@ -1,4 +1,5 @@
 ﻿using DoeInc.Ticketing.ServiceInterface;
+using DoeInc.Ticketing.ServiceModel;
 using Funq;
 using ServiceStack;
 
@@ -23,6 +24,25 @@ namespace DoeInc.Ticketing.Web
         /// <param name="container"></param>
         public override void Configure(Container container)
         {
+            this.Routes.Add<GetTickets>("/tickets",
+                                        ApplyTo.Get)
+                .Add<StoreTicket>("/tickets",
+                                  ApplyTo.Post)
+                .Add<StoreTicket>("/tickets/{Id}",
+                                  ApplyTo.Put)
+                .Add<GetTicket>("/tickets/{Id}",
+                                ApplyTo.Get)
+                .Add<DeleteTicket>("/tickets/{Id}",
+                                   ApplyTo.Delete);
+
+            this.Routes.Add<GetComments>("/tickets/{TicketId}/comments",
+                                         ApplyTo.Get)
+                .Add<StoreComment>("/tickets/{TicketId}/comments",
+                                   ApplyTo.Post)
+                .Add<StoreComment>("/tickets/{TicketId}/comments/{Id}",
+                                   ApplyTo.Put)
+                .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
+                                    ApplyTo.Delete);
             //Config examples
             //this.Plugins.Add(new PostmanFeature());
             //this.Plugins.Add(new CorsFeature());
