@@ -10,6 +10,9 @@ namespace RabbitMQ.ComponentB
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             var rabbitMqServer = new RabbitMqServer();
             rabbitMqServer.RegisterHandler<Hello>(message =>
                                                   {

@@ -11,6 +11,9 @@ namespace RedisMQ.ServiceB
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             var redisClientManager = new BasicRedisClientManager();
             var redisMqServer = new RedisMqServer(redisClientManager);
 

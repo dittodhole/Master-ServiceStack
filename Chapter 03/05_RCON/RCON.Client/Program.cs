@@ -10,6 +10,9 @@ namespace RCON.Client
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             const int port = 12345;
             var ipEndPoint = new IPEndPoint(IPAddress.Loopback,
                                             port);

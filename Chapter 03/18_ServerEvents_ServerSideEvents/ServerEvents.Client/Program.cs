@@ -9,6 +9,9 @@ namespace ServerEvents.Client
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             var serverEventsClient = new ServerEventsClient("http://localhost:54392");
             serverEventsClient.OnMessage = serverEventMessage =>
                                            {

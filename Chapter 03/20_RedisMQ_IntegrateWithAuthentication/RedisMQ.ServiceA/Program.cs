@@ -9,6 +9,9 @@ namespace RedisMQ.ServiceA
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             AuthenticateResponse authenticateResponse;
             using (var jsonServiceClient = new JsonServiceClient(Constants.UrlBase))
             {

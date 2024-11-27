@@ -9,6 +9,9 @@ namespace InMemoryMQ
     {
         private static void Main(string[] args)
         {
+            var licensePath = @"~/../../../../license.txt".MapHostAbsolutePath();
+            Licensing.RegisterLicenseFromFileIfExists(licensePath);
+
             var inMemoryTransientMessageFactory = new InMemoryTransientMessageFactory();
 
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
