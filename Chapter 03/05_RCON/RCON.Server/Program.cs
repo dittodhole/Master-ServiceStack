@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
+using RCON.Models;
 using ServiceStack;
-using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 
-namespace RCON
+namespace RCON.Server
 {
     internal class Program
     {
@@ -13,7 +13,7 @@ namespace RCON
             var ipAddress = IPAddress.Parse("127.0.0.1");
             var ipEndPoint = new IPEndPoint(ipAddress,
                                             12345);
-            var messageService = new Server(ipEndPoint);
+            var messageService = new ServiceStack.Messaging.Rcon.Server(ipEndPoint);
             messageService.RegisterHandler<Hello>(message =>
                                                   {
                                                       var hello = message.GetBody();
@@ -27,42 +27,11 @@ namespace RCON
                                                   });
             messageService.Start();
 
-            var client = new Client(ipEndPoint);
-            client.Connect();
-
-            for (var i = 0;
-                 i < 10;
-                 i++)
-            {
-                var hello = new Hello
-                            {
-                                Name = i.ToString()
-                            };
-
-                client.Call(hello,
-                            (rcon,
-                             response) =>
-                            {
-                                var message = response.ToMessage<HelloResponse>();
-                                var helloResponse = message.GetBody();
-                                helloResponse.Result.Print();
-                            });
-            }
+            "RCON server is running, press ENTER to exit".Print();
 
             Console.ReadLine();
 
-            client.Disconnect();
-            messageService.Stop();
-        }
-
-        public class Hello : IReturn<HelloResponse>
-        {
-            public string Name { get; set; }
-        }
-
-        public class HelloResponse
-        {
-            public string Result { get; set; }
+            messageService.Dispose();
         }
     }
 }

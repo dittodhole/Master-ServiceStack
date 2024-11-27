@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD0E65A1-F705-4E89-BF0B-3E9AAC587ABE}</ProjectGuid>
+    <ProjectGuid>{4AECECAC-B58F-4A63-8977-01880056F4B3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RCON</RootNamespace>
-    <AssemblyName>RCON</AssemblyName>
+    <RootNamespace>RCON.Server</RootNamespace>
+    <AssemblyName>RCON.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -79,6 +79,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RCON.Models\RCON.Models.csproj">
+      <Project>{72f81375-7dfe-494b-ac09-a8ab2c9a6d91}</Project>
+      <Name>RCON.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
