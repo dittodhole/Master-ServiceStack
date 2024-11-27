@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DoeInc.Ticketing.ServiceModel.Types;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 
@@ -76,6 +77,9 @@ namespace DoeInc.Ticketing.Core
                 }
                 else
                 {
+                    // this is need for not loosing properties of initial storing (creator)
+                    ticket.PopulateWith(db.SingleById<Ticket>(ticket.Id));
+
                     success = db.Update(ticket) == 1;
                     if (success)
                     {
