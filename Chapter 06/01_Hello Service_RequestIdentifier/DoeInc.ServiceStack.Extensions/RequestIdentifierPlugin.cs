@@ -1,6 +1,5 @@
 ﻿using System;
 using ServiceStack;
-using ServiceStack.Host;
 using ServiceStack.Web;
 
 namespace DoeInc.ServiceStack.Extensions
