@@ -9,18 +9,18 @@ namespace DoeInc.Tasker.Console
     {
         public void Any(HelloRequest request)
         {
-            var session = this.GetSession();
+            const string sessionKey = "foo";
 
-            const string sessionKey = "previousTimestamp";
-
-            var previousTimestamp = this.SessionBag.Get<string>(sessionKey);
+            var previousTimestamp = this.SessionBag.Get<long>(sessionKey);
 
             "Previous Timestamp: {0}".Print(previousTimestamp);
 
             this.SessionBag.Set(sessionKey,
-                                DateTime.Now.Ticks.ToString());
+                                DateTime.Now.Ticks);
 
-            session.Id.Print();
+            var sessionId = this.GetSessionId();
+
+            "Session Id: {0}".Print(sessionId);
         }
     }
 }
