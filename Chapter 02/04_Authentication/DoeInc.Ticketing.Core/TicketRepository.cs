@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using DoeInc.Ticketing.ServiceModel;
 using DoeInc.Ticketing.ServiceModel.Types;
-using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 
@@ -41,7 +39,7 @@ namespace DoeInc.Ticketing.Core
                                          {
                                              Id = ticketId,
                                              ProcessorUserAuthId = userAuthId
-                                         }) > 1;
+                                         }) > 0;
             }
         }
 
@@ -68,9 +66,10 @@ namespace DoeInc.Ticketing.Core
 
         public Ticket Store(Ticket ticket)
         {
+            bool success;
+
             using (var db = this.ConnectionFactory.Open())
             {
-                bool success;
                 if (ticket.Id <= 0)
                 {
                     success = db.Save(ticket);
@@ -83,13 +82,14 @@ namespace DoeInc.Ticketing.Core
                         ticket = db.SingleById<Ticket>(ticket.Id);
                     }
                 }
-
-                if (!success)
-                {
-                    return null;
-                }
             }
-            return ticket;
+
+            if (success)
+            {
+                return ticket;
+            }
+
+            return null;
         }
     }
 }

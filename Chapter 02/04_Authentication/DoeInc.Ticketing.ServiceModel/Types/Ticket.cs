@@ -8,6 +8,7 @@ namespace DoeInc.Ticketing.ServiceModel.Types
         public Status Status { get; set; }
 
         [AutoIncrement]
+        [PrimaryKey]
         public int Id { get; set; }
 
         public ulong RowVersion { get; set; }
