@@ -8,8 +8,8 @@ namespace DoeInc.Tasker.Console
         {
             const string url = "http://*:1337/";
 
-            new AppHost().Init()
-                         .Start(url);
+            var appHost = new AppHost().Init()
+                                       .Start(url);
 
             string.Format("Listening at {0}",
                           url)

@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.4.0.40\lib\net40\ServiceStack.dll</HintPath>
       <Private>True</Private>
@@ -62,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHost.cs" />
+    <Compile Include="AutofacAdapter.cs" />
     <Compile Include="HelloRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
