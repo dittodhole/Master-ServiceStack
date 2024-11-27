@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.Text;
 
@@ -16,19 +17,19 @@ namespace InMemoryMQ
 
             var messageService = inMemoryTransientMessageFactory.CreateMessageService();
 
-            messageService.RegisterHandler<HelloRequest>(m =>
-                                                         {
-                                                             var helloRequest = m.GetBody();
-                                                             var name = helloRequest.Name;
-                                                             var helloResponse = new HelloResponse
-                                                                                 {
-                                                                                     Result = "Hello " + name
-                                                                                 };
+            messageService.RegisterHandler<Hello>(m =>
+                                                  {
+                                                      var hello = m.GetBody();
+                                                      var name = hello.Name;
+                                                      var helloResponse = new HelloResponse
+                                                                          {
+                                                                              Result = "Hello {0}".Fmt(name)
+                                                                          };
 
-                                                             "conumser on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
+                                                      "conumser on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
 
-                                                             return helloResponse;
-                                                         });
+                                                      return helloResponse;
+                                                  });
             messageService.RegisterHandler<HelloResponse>(m =>
                                                           {
                                                               var helloResponse = m.GetBody();
@@ -47,18 +48,18 @@ namespace InMemoryMQ
                          {
                              "producer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
 
-                             var helloRequest = new HelloRequest
+                             var hello = new Hello
                                                 {
                                                     Name = i.ToString()
                                                 };
-                             messageProducer.Publish(helloRequest);
+                             messageProducer.Publish(hello);
                          }
                      });
 
             Console.ReadLine();
         }
 
-        public class HelloRequest
+        public class Hello : IReturn<HelloResponse>
         {
             public string Name { get; set; }
         }
