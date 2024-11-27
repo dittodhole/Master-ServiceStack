@@ -1,5 +1,6 @@
 ﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
+using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
@@ -33,7 +34,12 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public object Get(GetTicket request)
         {
-            return this.Repository.Read(request);
+            var ticket = this.Repository.Read(request);
+            if (ticket == null)
+            {
+                return HttpError.NotFound("The requested ticket instance cannot be found");
+            }
+            return ticket;
         }
 
         public object Get(GetTickets request)
