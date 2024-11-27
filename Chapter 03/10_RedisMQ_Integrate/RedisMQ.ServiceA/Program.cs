@@ -19,7 +19,7 @@ namespace RedisMQ.ServiceA
                  i < 10;
                  i++)
             {
-                var queueName = QueueNames.GetTempQueueName();
+                var queueName = messageQueueClient.GetTempQueueName();
                 var hello = new Hello
                             {
                                 Name = i.ToString()

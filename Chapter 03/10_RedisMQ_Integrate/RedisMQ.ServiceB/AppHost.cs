@@ -21,10 +21,13 @@ namespace RedisMQ.ServiceB
             this.Routes.Add<Hello>("/hello/{Name}");
 
             container.Register<IRedisClientsManager>(arg => new RedisManagerPool());
+
             var redisClientsManager = container.Resolve<IRedisClientsManager>();
             var redisMqServer = new RedisMqServer(redisClientsManager);
             redisMqServer.RegisterHandler<Hello>(this.ServiceController.ExecuteMessage);
             redisMqServer.Start();
+
+            container.Register<IMessageService>(redisMqServer);
         }
     }
 }
