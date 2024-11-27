@@ -101,6 +101,17 @@ namespace DoeInc.Ticketing.Web
                                             userAuthRepository.CreateUserAuth(userAuth,
                                                                               "password");
                                         }
+                                        if (userAuthRepository.GetUserAuthByUserName("johnhancock") == null)
+                                        {
+                                            var userAuth = new UserAuth
+                                                           {
+                                                               UserName = "johnhancock",
+                                                               FirstName = "John",
+                                                               LastName = "Hancock"
+                                                           };
+                                            userAuthRepository.CreateUserAuth(userAuth,
+                                                                              "password");
+                                        }
                                     })
                      .ReusedWithin(ReuseScope.Container);
         }
