@@ -28,7 +28,6 @@ namespace DoeInc.Ticketing.ServiceInterface
             }
         }
 
-        [DefaultView("DeleteTicket")]
         public object Delete(DeleteTicket request)
         {
             var userAuthId = this.GetSession()
@@ -48,7 +47,6 @@ namespace DoeInc.Ticketing.ServiceInterface
             return ticket;
         }
 
-        [DefaultView("Ticket")]
         public object Get(GetTicket request)
         {
             var userAuthId = this.GetSession()
@@ -72,7 +70,6 @@ namespace DoeInc.Ticketing.ServiceInterface
             return response;
         }
 
-        [DefaultView("Tickets")]
         public object Get(GetTickets request)
         {
             var userAuthId = this.GetSession()
@@ -85,7 +82,6 @@ namespace DoeInc.Ticketing.ServiceInterface
             return tickets;
         }
 
-        [DefaultView("Ticket")]
         public object Post(StoreTicket request)
         {
             var userAuthId = this.GetSession()
@@ -108,7 +104,6 @@ namespace DoeInc.Ticketing.ServiceInterface
             return ticket;
         }
 
-        [DefaultView("Ticket")]
         public object Put(StoreTicket request)
         {
             var userAuthId = this.GetSession()

@@ -8,7 +8,6 @@ using ServiceStack.Auth;
 using ServiceStack.Caching;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using ServiceStack.Razor;
 
 namespace DoeInc.Ticketing.Web
 {
@@ -29,10 +28,6 @@ namespace DoeInc.Ticketing.Web
 
         private void RegisterPlugins()
         {
-            this.Plugins.Add(new RazorFormat
-                             {
-                                 EnableLiveReload = true
-                             });
             this.Plugins.Add(new SessionFeature());
             this.Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                                              new IAuthProvider[]
@@ -46,11 +41,9 @@ namespace DoeInc.Ticketing.Web
                              });
             this.Plugins.Add(new RequestLogsFeature
                              {
-                                 EnableSessionTracking = true,
-                                 EnableRequestBodyTracking = true,
-                                 EnableResponseTracking = true
+                                 EnableSessionTracking = true
                              });
-            //typeof (RequestLogsService).AddAttributes(new AuthenticateAttribute());
+            typeof (RequestLogsService).AddAttributes(new AuthenticateAttribute());
         }
 
         private void RegisterRoutes()
