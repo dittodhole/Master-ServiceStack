@@ -1,0 +1,70 @@
+﻿@using System.Collections.Generic
+@using DoeInc.Ticketing.ServiceModel
+@inherits ViewPage<List<DoeInc.Ticketing.ServiceModel.Types.Ticket>>
+
+<h1>Overview</h1>
+@foreach (var ticket in Model)
+{
+    <div class="row">
+        <div class="col-md-1">
+            @ticket.Id
+        </div>
+        <div class="col-md-10">
+            <a href="@(new GetTicket
+                       {
+                           Id = ticket.Id
+                       }.ToGetUrl())">
+                @ticket.Title</a>
+        </div>
+        <div class="col-md-1">
+            <form action="@(new DeleteTicket
+                            {
+                                Id = ticket.Id
+                            }.ToDeleteUrl())"
+                  method="@HttpMethods.Post">
+                @Html.Hidden(HttpHeaders.XHttpMethodOverride,
+                             HttpMethods.Delete)
+                <button type="submit"
+                        class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"
+                          aria-hidden="true"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+<h3>Create a Ticket</h3>
+<form action="@(new StoreTicket().ToPostUrl())"
+      method="@HttpMethods.Post">
+    <div class="form-group">
+        <label for="title"
+               class="col-sm-2 control-label">
+            Title
+        </label>
+        <div class="col-sm-10">
+            @Html.TextBox("Title",
+                          string.Empty,
+                          new Dictionary<string, object>
+                          {
+                              {
+                                  "required", "required"
+                              },
+                              {
+                                  "placeholder", "Enter a title"
+                              },
+                              {
+                                  "class", "form-control"
+                              }
+                          })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button type="submit"
+                    class="btn btn-default">
+                Create
+            </button>
+        </div>
+    </div>
+</form>

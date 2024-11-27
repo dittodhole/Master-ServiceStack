@@ -1,0 +1,46 @@
+﻿@using System.Collections.Generic
+@using DoeInc.Ticketing.ServiceModel
+@inherits ViewPage<DoeInc.Ticketing.ServiceModel.Types.Ticket>
+
+<h1>Edit Ticket</h1>
+<a href="@(new GetTickets().ToGetUrl())">Back to overview</a>
+<form action="@(new StoreTicket
+                {
+                    Id = Model.Id
+                }.ToPutUrl())"
+      method="@HttpMethods.Post">
+    @Html.Hidden(HttpHeaders.XHttpMethodOverride,
+                 HttpMethods.Put)
+    @Html.HiddenFor(arg => arg.RowVersion,
+                    Model.RowVersion)
+    <div class="form-group">
+        <label for="title"
+               class="col-sm-2 control-label">
+            Title
+        </label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(arg => arg.Title,
+                             Model.Title,
+                             new Dictionary<string, object>
+                             {
+                                 {
+                                     "required", "required"
+                                 },
+                                 {
+                                     "placeholder", "Enter a title"
+                                 },
+                                 {
+                                     "class", "form-control"
+                                 }
+                             })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button type="submit"
+                    class="btn btn-default">
+                Save
+            </button>
+        </div>
+    </div>
+</form>
