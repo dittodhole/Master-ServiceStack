@@ -71,6 +71,16 @@ namespace DoeInc.Ticketing.Tests
         }
 
         [Test]
+        public void ShouldGetTickets()
+        {
+            using (var jsonServiceClient = new JsonServiceClient(URLBase))
+            {
+                var tickets = jsonServiceClient.Get(new GetTickets());
+                Assert.That(tickets != null);
+            }
+        }
+
+        [Test]
         public void ShouldCreateTicketAndUpdate()
         {
             using (var jsonServiceClient = new JsonServiceClient(URLBase))
