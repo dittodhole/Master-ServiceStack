@@ -56,7 +56,6 @@
     <Compile Include="Types\EntityBase.cs" />
     <Compile Include="Types\Enums.cs" />
     <Compile Include="Types\Ticket.cs" />
-    <Compile Include="Types\User.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
