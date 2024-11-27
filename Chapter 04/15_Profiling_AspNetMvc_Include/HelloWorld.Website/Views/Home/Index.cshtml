@@ -1,0 +1,19 @@
+﻿@using ServiceStack.Html
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>IndexView</title>
+</head>
+<body>
+@ServiceStack.MiniProfiler.Profiler.RenderIncludes().AsRaw()
+<div>
+    hello
+</div>
+</body>
+</html>
