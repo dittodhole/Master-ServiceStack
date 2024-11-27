@@ -1,6 +1,4 @@
-﻿using System;
-using ServiceStack;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack;
 
 namespace HelloWorld
 {

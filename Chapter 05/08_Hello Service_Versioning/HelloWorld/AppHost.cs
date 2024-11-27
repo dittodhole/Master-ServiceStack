@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Xml;
-using Funq;
+﻿using Funq;
 using ServiceStack;
 using ServiceStack.Text;
 
