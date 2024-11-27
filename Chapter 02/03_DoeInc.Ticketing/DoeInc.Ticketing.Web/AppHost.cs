@@ -34,10 +34,27 @@ namespace DoeInc.Ticketing.Web
             this.RegisterPlugins();
         }
 
-        private void RegisterPlugins()
+        private void RegisterRoutes()
         {
-            this.Plugins.Add(new SwaggerFeature());
-            this.Plugins.Add(new SessionFeature());
+            this.Routes.Add<GetTickets>("/tickets",
+                                        ApplyTo.Get)
+                .Add<StoreTicket>("/tickets",
+                                  ApplyTo.Post)
+                .Add<StoreTicket>("/tickets/{Id}",
+                                  ApplyTo.Put)
+                .Add<GetTicket>("/tickets/{Id}",
+                                ApplyTo.Get)
+                .Add<DeleteTicket>("/tickets/{Id}",
+                                   ApplyTo.Delete);
+
+            this.Routes.Add<GetComments>("/tickets/{TicketId}/comments",
+                                         ApplyTo.Get)
+                .Add<StoreComment>("/tickets/{TicketId}/comments",
+                                   ApplyTo.Post)
+                .Add<StoreComment>("/tickets/{TicketId}/comments/{Id}",
+                                   ApplyTo.Put)
+                .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
+                                    ApplyTo.Delete);
         }
 
         private void RegisterDependencies(Container container)
@@ -60,27 +77,10 @@ namespace DoeInc.Ticketing.Web
                                      cacheClient) => cacheClient.InitSchema());
         }
 
-        private void RegisterRoutes()
+        private void RegisterPlugins()
         {
-            this.Routes.Add<GetTickets>("/tickets",
-                                        ApplyTo.Get)
-                .Add<StoreTicket>("/tickets",
-                                  ApplyTo.Post)
-                .Add<StoreTicket>("/tickets/{Id}",
-                                  ApplyTo.Put)
-                .Add<GetTicket>("/tickets/{Id}",
-                                ApplyTo.Get)
-                .Add<DeleteTicket>("/tickets/{Id}",
-                                   ApplyTo.Delete);
-
-            this.Routes.Add<GetComments>("/tickets/{TicketId}/comments",
-                                         ApplyTo.Get)
-                .Add<StoreComment>("/tickets/{TicketId}/comments",
-                                   ApplyTo.Post)
-                .Add<StoreComment>("/tickets/{TicketId}/comments/{Id}",
-                                   ApplyTo.Put)
-                .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
-                                    ApplyTo.Delete);
+            this.Plugins.Add(new SwaggerFeature());
+            this.Plugins.Add(new SessionFeature());
         }
     }
 }

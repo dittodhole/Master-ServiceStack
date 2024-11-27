@@ -1,5 +1,4 @@
-﻿using System;
-using DoeInc.Ticketing.Core;
+﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceInterface;
 using DoeInc.Ticketing.ServiceModel;
 using Funq;
@@ -19,7 +18,7 @@ namespace DoeInc.Ticketing.Web
         /// </summary>
         public AppHost()
             : base("DoeInc.Ticketing",
-                   typeof (TicketService).Assembly)
+                   typeof(TicketService).Assembly)
         {
         }
 
@@ -29,6 +28,13 @@ namespace DoeInc.Ticketing.Web
         /// </summary>
         /// <param name="container"></param>
         public override void Configure(Container container)
+        {
+            this.RegisterRoutes();
+            this.RegisterDependencies(container);
+            this.RegisterPlugins();
+        }
+
+        private void RegisterRoutes()
         {
             this.Routes.Add<GetTickets>("/tickets",
                                         ApplyTo.Get)
@@ -49,33 +55,28 @@ namespace DoeInc.Ticketing.Web
                                    ApplyTo.Put)
                 .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
                                     ApplyTo.Delete);
+        }
 
+        private void RegisterDependencies(Container container)
+        {
             container.RegisterAutoWired<CommentRepository>()
-                     .InitializedBy((container1,
+                     .InitializedBy((arg,
                                      repository) => repository.Initialize());
             container.RegisterAutoWired<TicketRepository>()
-                     .InitializedBy((container1,
+                     .InitializedBy((arg,
                                      repository) => repository.Initialize());
             container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
-                                                                                         SqliteDialect.Provider));
+                                                                                         SqliteDialect.Provider))
+                     .ReusedWithin(ReuseScope.Hierarchy);
 
-            this.Plugins.Add(new SwaggerFeature());
-            this.Plugins.Add(new SessionFeature());
-
-            this.GlobalResponseFilters.Add((httpReq,
-                                            httpRes,
-                                            response) =>
-                                           {
-                                               var session = httpReq.GetSession();
-                                               httpReq.SaveSession(session,
-                                                                   TimeSpan.FromMinutes(20d));
-                                           });
             container.RegisterAutoWiredAs<LegacySession, ISession>()
                      .ReusedWithin(ReuseScope.Request);
+        }
 
-            //Config examples
-            //this.Plugins.Add(new PostmanFeature());
-            //this.Plugins.Add(new CorsFeature());
+        private void RegisterPlugins()
+        {
+            this.Plugins.Add(new SwaggerFeature());
+            this.Plugins.Add(new SessionFeature());
         }
     }
 }

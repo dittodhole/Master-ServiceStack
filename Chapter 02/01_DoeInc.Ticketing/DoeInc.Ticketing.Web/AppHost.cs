@@ -28,6 +28,13 @@ namespace DoeInc.Ticketing.Web
         /// <param name="container"></param>
         public override void Configure(Container container)
         {
+            this.RegisterRoutes();
+            this.RegisterDependencies(container);
+            this.RegisterPlugins();
+        }
+
+        private void RegisterRoutes()
+        {
             this.Routes.Add<GetTickets>("/tickets",
                                         ApplyTo.Get)
                 .Add<StoreTicket>("/tickets",
@@ -47,20 +54,25 @@ namespace DoeInc.Ticketing.Web
                                    ApplyTo.Put)
                 .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
                                     ApplyTo.Delete);
+        }
 
+        private void RegisterDependencies(Container container)
+        {
             container.RegisterAutoWired<CommentRepository>()
-                     .InitializedBy((container1,
+                     .InitializedBy((arg,
                                      repository) => repository.Initialize());
             container.RegisterAutoWired<TicketRepository>()
-                     .InitializedBy((container1,
+                     .InitializedBy((arg,
                                      repository) => repository.Initialize());
             container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
-                                                                                         SqliteDialect.Provider));
+                                                                                         SqliteDialect.Provider))
+                     .ReusedWithin(ReuseScope.Hierarchy);
+        }
 
+        private void RegisterPlugins()
+        {
             this.Plugins.Add(new SwaggerFeature());
-            //Config examples
-            //this.Plugins.Add(new PostmanFeature());
-            //this.Plugins.Add(new CorsFeature());
+            this.Plugins.Add(new SessionFeature());
         }
     }
 }
