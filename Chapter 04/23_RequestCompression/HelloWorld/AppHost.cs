@@ -46,17 +46,15 @@ namespace HelloWorld
         {
             request.UseBufferedStream = true;
 
-            var decompressedStream = decompressFn.Invoke(request.InputStream);
-
             var listenerRequest = request as ListenerRequest;
             var aspNetRequest = request as AspNetRequest;
             if (listenerRequest != null)
             {
-                listenerRequest.BufferedStream = decompressedStream;
+                listenerRequest.BufferedStream = decompressFn.Invoke(request.InputStream);
             }
             else if (aspNetRequest != null)
             {
-                aspNetRequest.BufferedStream = decompressedStream;
+                aspNetRequest.BufferedStream = decompressFn.Invoke(request.InputStream);
             }
             else
             {
