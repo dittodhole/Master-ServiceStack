@@ -4,7 +4,7 @@ using ServiceStack.Messaging.Redis;
 using ServiceStack.Redis;
 using ServiceStack.Text;
 
-namespace RedisMQ.ServiceC
+namespace RedisMQ.ServiceA
 {
     internal class Program
     {
@@ -12,23 +12,20 @@ namespace RedisMQ.ServiceC
         {
             var redisClientManager = new BasicRedisClientManager();
             var redisMqServer = new RedisMqServer(redisClientManager);
-
             redisMqServer.RegisterHandler<HelloResponse>(message =>
                                                          {
                                                              var helloResponse = message.GetBody();
                                                              var result = helloResponse.Result;
+
                                                              result.Print();
 
                                                              return null;
                                                          });
-
             redisMqServer.Start();
-
-            "listening for helloResponses, which get printed".Print();
 
             Console.ReadLine();
 
-            redisMqServer.Dispose();
+            redisMqServer.Stop();
             redisClientManager.Dispose();
         }
     }

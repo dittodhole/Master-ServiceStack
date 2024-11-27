@@ -28,6 +28,10 @@ namespace RedisMQ.ServiceA
             }
 
             Console.ReadLine();
+
+            messageProducer.Dispose();
+            redisMqServer.Dispose();
+            redisClientManager.Dispose();
         }
     }
 }

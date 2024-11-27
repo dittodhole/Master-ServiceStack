@@ -30,6 +30,9 @@ namespace RedisMQ.ServiceB
             "listening for hello's, which get forwarded as helloResponses".Print();
 
             Console.ReadLine();
+
+            redisMqServer.Dispose();
+            redisClientManager.Dispose();
         }
     }
 }
