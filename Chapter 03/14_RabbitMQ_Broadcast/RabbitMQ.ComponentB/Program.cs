@@ -19,12 +19,12 @@ namespace RabbitMQ.ComponentB
             var messageQueueClient = (RabbitMqQueueClient) rabbitMqServer.CreateMessageQueueClient();
             var channel = messageQueueClient.Channel;
             var queueName = messageQueueClient.GetTempQueueName();
-            channel.QueueBind(queueName,
-                              CustomExchangeNames.FanoutExchangeName,
-                              QueueNames<Hello>.In);
+            channel.QueueBind(queue: queueName,
+                              exchange: CustomExchangeNames.FanoutExchangeName,
+                              routingKey: QueueNames<Hello>.In);
 
             var consumer = new RabbitMqBasicConsumer(channel);
-            channel.BasicConsume(queueName,
+            channel.BasicConsume(queue: queueName,
                                  noAck: false,
                                  consumer: consumer);
 

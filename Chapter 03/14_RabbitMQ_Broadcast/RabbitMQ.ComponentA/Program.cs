@@ -13,8 +13,8 @@ namespace RabbitMQ.ComponentA
             var rabbitMqServer = new RabbitMqServer();
             var messageProducer = (RabbitMqProducer) rabbitMqServer.CreateMessageProducer();
             var channel = messageProducer.Channel;
-            channel.ExchangeDeclare(CustomExchangeNames.FanoutExchangeName,
-                                    ExchangeType.Fanout,
+            channel.ExchangeDeclare(exchange: CustomExchangeNames.FanoutExchangeName,
+                                    type: ExchangeType.Fanout,
                                     durable: true,
                                     autoDelete: false,
                                     arguments: null);
@@ -24,9 +24,9 @@ namespace RabbitMQ.ComponentA
                             Name = "Demo"
                         };
             var message = new Message<Hello>(hello);
-            messageProducer.Publish(QueueNames<Hello>.In,
-                                    message,
-                                    CustomExchangeNames.FanoutExchangeName);
+            messageProducer.Publish(queueName: QueueNames<Hello>.In,
+                                    message: message,
+                                    exchange: CustomExchangeNames.FanoutExchangeName);
 
             messageProducer.Dispose();
             rabbitMqServer.Dispose();
