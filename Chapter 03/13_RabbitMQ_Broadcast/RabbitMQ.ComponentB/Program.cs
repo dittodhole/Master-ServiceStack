@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using RabbitMQ.Models;
-using RabbitMQ.Util;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.RabbitMq;
@@ -23,39 +22,41 @@ namespace RabbitMQ.ComponentB
             channel.QueueBind(queueName,
                               CustomExchangeNames.FanoutExchangeName,
                               QueueNames<Hello>.In);
-            var sharedQueue = new SharedQueue<BasicGetResult>();
-            var rabbitMqBasicConsumer = new RabbitMqBasicConsumer(channel,
-                                                                  sharedQueue);
+
+            var consumer = new RabbitMqBasicConsumer(channel);
             channel.BasicConsume(queueName,
-                                 false,
-                                 rabbitMqBasicConsumer);
+                                 noAck: false,
+                                 consumer: consumer);
 
             Task.Run(() =>
                      {
                          while (true)
                          {
+                             BasicGetResult basicGetResult;
                              try
                              {
-                                 var basicMsg = sharedQueue.Dequeue();
-                                 var message = basicMsg.ToMessage<Hello>();
-                                 var hello = message.GetBody();
-                                 var name = hello.Name;
-                                 var result = "Hello {0}".Fmt(name);
-
-                                 result.Print();
+                                 basicGetResult = consumer.Queue.Dequeue();
                              }
                              catch (EndOfStreamException endOfStreamException)
                              {
                                  // this is ok
+                                 return;
                              }
                              catch (OperationInterruptedException operationInterruptedException)
                              {
                                  // this is ok
+                                 return;
                              }
                              catch (Exception ex)
                              {
                                  throw;
                              }
+                             var message = basicGetResult.ToMessage<Hello>();
+                             var hello = message.GetBody();
+                             var name = hello.Name;
+                             var result = "Hello {0}".Fmt(name);
+
+                             result.Print();
                          }
                      });
 
