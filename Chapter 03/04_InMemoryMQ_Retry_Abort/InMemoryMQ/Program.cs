@@ -21,21 +21,7 @@ namespace InMemoryMQ
                                                   {
                                                       "consumer called for the {0} time".Print(message.RetryAttempts);
 
-                                                      if (message.RetryAttempts == 0)
-                                                      {
-                                                          throw new UnRetryableMessagingException();
-                                                      }
-
-                                                      var hello = message.GetBody();
-                                                      var name = hello.Name;
-                                                      var helloResponse = new HelloResponse
-                                                                          {
-                                                                              Result = "Hello {0}".Fmt(name)
-                                                                          };
-
-                                                      "consumer on thread {0}".Print(Thread.CurrentThread.ManagedThreadId);
-
-                                                      return helloResponse;
+                                                      throw new UnRetryableMessagingException("something went terribly wrong");
                                                   },
                                                   (messageHandler,
                                                    message,
