@@ -1,5 +1,6 @@
 ﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
+using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
@@ -29,30 +30,34 @@ namespace DoeInc.Ticketing.ServiceInterface
 
         public void Delete(DeleteTicket request)
         {
+            var ticketId = request.Id;
             var userAuthId = this.GetSession()
                                  .UserAuthId;
-            if (this.Repository.Delete(request,
+
+            if (this.Repository.Delete(ticketId,
                                        userAuthId))
             {
                 this.Request.RemoveFromCache(this.Cache,
-                                             UrnId.Create<GetTicket>(request.Id),
+                                             UrnId.Create<GetTicket>(ticketId),
                                              UrnId.Create<GetTickets>(userAuthId));
             }
         }
 
         public object Get(GetTicket request)
         {
+            var ticketId = request.Id;
             var userAuthId = this.GetSession()
                                  .UserAuthId;
-            var ticketId = request.Id;
+
             var ticket = this.Request.ToOptimizedResultUsingCache(this.Cache,
                                                                   UrnId.Create<GetTicket>(ticketId),
-                                                                  () => this.Repository.Read(request,
+                                                                  () => this.Repository.Read(ticketId,
                                                                                              userAuthId));
             if (ticket == null)
             {
                 return HttpError.NotFound("The requested ticket instance cannot be found");
             }
+
             return ticket;
         }
 
@@ -70,11 +75,19 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var userAuthId = this.GetSession()
                                  .UserAuthId;
-            var ticket = this.Repository.Store(request,
-                                               userAuthId);
+            var ticket = request.ConvertTo<Ticket>();
+            ticket.ProcessorUserAuthId = userAuthId;
+
+            ticket = this.Repository.Store(ticket);
+            if (ticket == null)
+            {
+                return HttpError.NotFound("The ticket instance cannot be found for update");
+            }
+
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
                                          UrnId.Create<GetTickets>(userAuthId));
+
             return ticket;
         }
 
@@ -82,11 +95,15 @@ namespace DoeInc.Ticketing.ServiceInterface
         {
             var userAuthId = this.GetSession()
                                  .UserAuthId;
-            var ticket = this.Repository.Store(request,
-                                               userAuthId);
+            var ticket = request.ConvertTo<Ticket>();
+            ticket.ProcessorUserAuthId = userAuthId;
+
+            ticket = this.Repository.Store(ticket);
+
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
                                          UrnId.Create<GetTickets>(userAuthId));
+
             return ticket;
         }
     }

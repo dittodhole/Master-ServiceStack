@@ -32,27 +32,27 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
-        public bool Delete(DeleteTicket request,
+        public bool Delete(int ticketId,
                            string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
                 return db.Delete<Ticket>(new
                                          {
-                                             request.Id,
+                                             Id = ticketId,
                                              ProcessorUserAuthId = userAuthId
                                          }) > 1;
             }
         }
 
-        public Ticket Read(GetTicket request,
+        public Ticket Read(int ticketId,
                            string userAuthId)
         {
             using (var db = this.ConnectionFactory.Open())
             {
                 return db.Single<Ticket>(new
                                          {
-                                             request.Id,
+                                             Id = ticketId,
                                              ProcessorUserAuthId = userAuthId
                                          });
             }
@@ -66,16 +66,12 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
-        public Ticket Store(StoreTicket request,
-                            string userAuthId)
+        public Ticket Store(Ticket ticket)
         {
-            var ticket = request.ConvertTo<Ticket>();
-            ticket.ProcessorUserAuthId = userAuthId;
-
             using (var db = this.ConnectionFactory.Open())
             {
                 bool success;
-                if (request.Id <= 0)
+                if (ticket.Id <= 0)
                 {
                     success = db.Save(ticket);
                 }
@@ -84,7 +80,7 @@ namespace DoeInc.Ticketing.Core
                     success = db.Update(ticket) == 1;
                     if (success)
                     {
-                        ticket = db.SingleById<Ticket>(request.Id);
+                        ticket = db.SingleById<Ticket>(ticket.Id);
                     }
                 }
 
