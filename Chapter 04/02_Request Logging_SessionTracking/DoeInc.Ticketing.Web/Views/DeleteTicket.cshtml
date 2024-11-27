@@ -1,0 +1,6 @@
+﻿@using DoeInc.Ticketing.ServiceModel
+@inherits ViewPage
+@{
+    var url = new GetTickets().ToGetUrl();
+    Response.Redirect(url);
+}

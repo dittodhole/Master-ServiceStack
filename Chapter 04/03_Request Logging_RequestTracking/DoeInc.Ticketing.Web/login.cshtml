@@ -1,0 +1,76 @@
+﻿@using System.Collections.Generic
+@using DoeInc.Ticketing.ServiceModel
+@using ServiceStack.Auth
+@inherits ViewPage
+
+<h1>Login</h1>
+<form role="form"
+      action="@CredentialsAuthProvider.Realm"
+      method="@HttpMethods.Post"
+      class="form-horizontal">
+    <div class="form-group">
+        <label for="username"
+               class="col-sm-2 control-label">
+            User
+        </label>
+        <div class="col-sm-10">
+            @Html.TextBox("username",
+                          string.Empty,
+                          new Dictionary<string, object>
+                          {
+                              {
+                                  "required", "required"
+                              },
+                              {
+                                  "placeholder", "Enter Username"
+                              },
+                              {
+                                  "class", "form-control"
+                              }
+                          })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password"
+               class="col-sm-2 control-label">
+            Password
+        </label>
+        <div class="col-sm-10">
+            @Html.Password("password",
+                           string.Empty,
+                           new Dictionary<string, object>
+                           {
+                               {
+                                   "required", "required"
+                               },
+                               {
+                                   "placeholder", "Enter Password"
+                               },
+                               {
+                                   "class", "form-control"
+                               }
+                           })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("rememberMe",
+                                   false)
+                    Remember me
+                </label>
+            </div>
+        </div>
+    </div>
+    @Html.Hidden("continue",
+                 new GetTickets().ToGetUrl())
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button type="submit"
+                    class="btn btn-default">
+                Sign in
+            </button>
+        </div>
+    </div>
+</form>
