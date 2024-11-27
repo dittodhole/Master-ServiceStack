@@ -1,5 +1,4 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Models;
+﻿using RabbitMQ.Models;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.RabbitMq;
@@ -13,18 +12,14 @@ namespace RabbitMQ.ComponentA
             var rabbitMqServer = new RabbitMqServer();
             var messageProducer = (RabbitMqProducer) rabbitMqServer.CreateMessageProducer();
             var channel = messageProducer.Channel;
-            channel.ExchangeDeclare(exchange: CustomExchangeNames.FanoutExchangeName,
-                                    type: ExchangeType.Fanout,
-                                    durable: true,
-                                    autoDelete: false,
-                                    arguments: null);
+            channel.RegisterFanoutExchange(CustomExchangeNames.FanoutExchangeName);
 
             var hello = new Hello
                         {
                             Name = "Demo"
                         };
             var message = new Message<Hello>(hello);
-            messageProducer.Publish(queueName: QueueNames<Hello>.In,
+            messageProducer.Publish(queueName: QueueNames<Hello>.In, // routingKey
                                     message: message,
                                     exchange: CustomExchangeNames.FanoutExchangeName);
 
