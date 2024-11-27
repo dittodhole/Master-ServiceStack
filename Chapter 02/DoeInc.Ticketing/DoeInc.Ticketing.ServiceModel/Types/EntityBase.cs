@@ -6,6 +6,6 @@ namespace DoeInc.Ticketing.ServiceModel.Types
     {
         [AutoIncrement]
         public int Id { get; set; }
-        public string RowVersion { get; set; }
+        public ulong RowVersion { get; set; }
     }
 }
