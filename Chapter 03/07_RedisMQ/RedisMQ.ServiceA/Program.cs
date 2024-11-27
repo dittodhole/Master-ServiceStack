@@ -11,7 +11,7 @@ namespace RedisMQ.ServiceA
     {
         private static void Main(string[] args)
         {
-            var pooledRedisClientManager = new PooledRedisClientManager();
+            var pooledRedisClientManager = new BasicRedisClientManager();
             var redisMqServer = new RedisMqServer(pooledRedisClientManager);
             var messageProducer = redisMqServer.CreateMessageProducer();
 

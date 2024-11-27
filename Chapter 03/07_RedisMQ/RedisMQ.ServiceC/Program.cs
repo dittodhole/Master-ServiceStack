@@ -10,7 +10,7 @@ namespace RedisMQ.ServiceC
     {
         private static void Main(string[] args)
         {
-            var pooledRedisClientManager = new PooledRedisClientManager();
+            var pooledRedisClientManager = new BasicRedisClientManager();
             var redisMqServer = new RedisMqServer(pooledRedisClientManager);
 
             redisMqServer.RegisterHandler<HelloResponse>(message =>
