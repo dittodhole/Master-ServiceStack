@@ -11,7 +11,7 @@ namespace RCON.Server
         private static void Main(string[] args)
         {
             const int port = 12345;
-            var ipEndPoint = new IPEndPoint(IPAddress.Loopback,
+            var ipEndPoint = new IPEndPoint(IPAddress.Any,
                                             port);
             var messageService = new ServiceStack.Messaging.Rcon.Server(ipEndPoint);
             messageService.RegisterHandler<Hello>(message =>
