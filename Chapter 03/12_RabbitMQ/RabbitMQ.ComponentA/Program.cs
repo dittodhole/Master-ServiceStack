@@ -11,16 +11,11 @@ namespace RabbitMQ.ComponentA
             var rabbitMqServer = new RabbitMqServer();
             var messageProducer = rabbitMqServer.CreateMessageProducer();
 
-            for (var i = 0;
-                 i < 10;
-                 i++)
+            var hello = new Hello
             {
-                var hello = new Hello
-                            {
-                                Name = i.ToString()
-                            };
-                messageProducer.Publish(hello);
-            }
+                Name = "Demo"
+            };
+            messageProducer.Publish(hello);
 
             messageProducer.Dispose();
             rabbitMqServer.Dispose();
