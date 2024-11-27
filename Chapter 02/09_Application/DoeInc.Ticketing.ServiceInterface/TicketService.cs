@@ -110,13 +110,13 @@ namespace DoeInc.Ticketing.ServiceInterface
                                  .UserAuthId;
 
             var ticket = request.ConvertTo<Ticket>();
-            ticket.ProcessorUserAuthId = userAuthId;
 
             ticket = this.Repository.Store(ticket);
 
             this.Request.RemoveFromCache(this.Cache,
                                          UrnId.Create<GetTicket>(ticket.Id),
-                                         UrnId.Create<GetTickets>(userAuthId));
+                                         UrnId.Create<GetTickets>(userAuthId),
+                                         UrnId.Create<GetTickets>(ticket.ProcessorUserAuthId));
 
             return ticket;
         }

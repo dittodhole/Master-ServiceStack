@@ -9,5 +9,6 @@ namespace DoeInc.Ticketing.ServiceModel
         public ulong RowVersion { get; set; }
         public string Title { get; set; }
         public Status Status { get; set; }
+        public string ProcessorUserAuthId { get; set; }
     }
 }
