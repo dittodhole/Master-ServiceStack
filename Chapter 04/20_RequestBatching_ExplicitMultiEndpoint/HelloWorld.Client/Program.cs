@@ -11,7 +11,7 @@ namespace HelloWorld.Client
         {
             using (var jsonServiceClient = new JsonServiceClient("http://localhost:5555"))
             {
-                var requests = new[]
+                var requests = new Hellos
                                {
                                    new Hello
                                    {
@@ -31,7 +31,7 @@ namespace HelloWorld.Client
                                    }
                                };
 
-                var responses = jsonServiceClient.SendAll(requests);
+                var responses = jsonServiceClient.Post(requests);
 
                 responses.PrintDump();
             }

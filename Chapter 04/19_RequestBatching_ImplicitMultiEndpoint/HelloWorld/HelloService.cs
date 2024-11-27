@@ -3,19 +3,20 @@ using ServiceStack;
 
 namespace HelloWorld
 {
-    public class HelloService : IService,
-                                IAny<Hello>
+    public class HelloService : Service,
+                                IAny<Hello>,
+                                IAny<Hello[]>
     {
+        public object Any(Hello[] request)
+        {
+            return request.Map(HelloService.DoWork);
+        }
+
         public object Any(Hello request)
         {
             var helloResponse = HelloService.DoWork(request);
 
             return helloResponse;
-        }
-
-        public object Any(Hello[] requests)
-        {
-            return requests.Map(HelloService.DoWork);
         }
 
         private static HelloResponse DoWork(Hello hello)
