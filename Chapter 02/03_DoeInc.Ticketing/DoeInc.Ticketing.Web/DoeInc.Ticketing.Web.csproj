@@ -41,6 +41,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.5.45.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.1.5.45.0\lib\AWSSDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Enyim.Caching, Version=2.12.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnyimMemcached.2.12\lib\net35\Enyim.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="ServiceStack, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.4.0.40\lib\net40\ServiceStack.dll</HintPath>
@@ -48,6 +56,14 @@
     </Reference>
     <Reference Include="ServiceStack.Api.Swagger, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Api.Swagger.4.0.40\lib\net40\ServiceStack.Api.Swagger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Caching.AwsDynamoDb, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Caching.AwsDynamoDb.4.0.40\lib\net40\ServiceStack.Caching.AwsDynamoDb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Caching.Memcached, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Caching.Memcached.4.0.40\lib\net40\ServiceStack.Caching.Memcached.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Client, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">

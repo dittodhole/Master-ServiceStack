@@ -72,9 +72,18 @@ namespace DoeInc.Ticketing.Web
             container.RegisterAutoWiredAs<LegacySession, ISession>()
                      .ReusedWithin(ReuseScope.Request);
 
-            container.RegisterAutoWiredAs<OrmLiteCacheClient, ICacheClient>()
+            container.Register<ICacheClient>(arg => new OrmLiteCacheClient())
                      .InitializedBy((arg,
                                      cacheClient) => cacheClient.InitSchema());
+
+            //container.Register<IRedisClientsManager>(arg => new PooledRedisClientManager())
+            //         .ReusedWithin(ReuseScope.Hierarchy);
+            //container.Register(arg => arg.Resolve<IRedisClientsManager>()
+            //                             .GetCacheClient())
+            //         .ReusedWithin(ReuseScope.Hierarchy);
+            //container.Register<ICacheClient>(arg => new MemcachedClientCache());
+            //container.Register<ICacheClient>(arg => new DynamoDbCacheClient());
+            //container.Register<ICacheClient>(arg => new MemoryCacheClient());
         }
 
         private void RegisterPlugins()
