@@ -2,7 +2,7 @@
 
 namespace HelloWorld
 {
-    public class ValidationRule
+    public class ValidationRulesOfProperty
     {
         public string PropertyName { get; set; }
         public List<string> ValidationRules { get; set; }

@@ -5,7 +5,7 @@ namespace HelloWorld
 {
     public class ValidationRuleSetResponse : IHasResponseStatus
     {
-        public List<ValidationRule> ValidationRules { get; set; }
+        public List<ValidationRulesOfProperty> Rules { get; set; }
         public ResponseStatus ResponseStatus { get; set; }
     }
 }
