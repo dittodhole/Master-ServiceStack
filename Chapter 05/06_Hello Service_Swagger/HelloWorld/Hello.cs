@@ -1,12 +1,15 @@
-﻿using ServiceStack;
+﻿using System.Net;
+using System.Runtime.Serialization;
+using ServiceStack;
 
 namespace HelloWorld
 {
     [Api("Endpoint to greet a person.")]
-    [Route("/hello/{Name}", Summary = "Greets a person.", Notes = "Longer Description")]
+    [ApiResponse(HttpStatusCode.InternalServerError, "There was an exception during greeting.")]
+    [Route("/hello", Summary = "Greets a person.", Notes = "Longer description.")]
     public class Hello : IReturn<HelloResponse>
     {
-        [ApiMember(IsRequired = true, Description = "Defines the person to greet.")]
+        [ApiMember(Description = "Defines the person to greet.", AllowMultiple = true)]
         public string Name { get; set; }
 
         [ApiMember(IsRequired = true, Description = "Defines the volume of the greeting.")]

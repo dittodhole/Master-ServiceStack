@@ -8,7 +8,6 @@ namespace HelloWorld
     [Api("foobar")]
     public class Hello : IReturn<HelloResponse>
     {
-        [Obsolete]
         public string Name { get; set; }
         public Volume Volume { get; set; }
     }
