@@ -15,24 +15,19 @@ namespace RedisMQ.ServiceA
             var redisMqServer = new RedisMqServer(redisClientManager);
             var messageQueueClient = redisMqServer.CreateMessageQueueClient();
 
-            for (var i = 0;
-                 i < 10;
-                 i++)
-            {
-                var queueName = QueueNames.GetTempQueueName();
-                var hello = new Hello
-                            {
-                                Name = i.ToString()
-                            };
-                var message = new Message<Hello>(hello)
-                              {
-                                  ReplyTo = queueName
-                              };
-                messageQueueClient.Publish(message);
-                var response = messageQueueClient.Get<HelloResponse>(queueName);
-                var helloResponse = response.GetBody();
-                helloResponse.Result.Print();
-            }
+            var queueName = messageQueueClient.GetTempQueueName();
+            var hello = new Hello
+                        {
+                            Name = "reply to originator"
+                        };
+            var message = new Message<Hello>(hello)
+                          {
+                              ReplyTo = queueName
+                          };
+            messageQueueClient.Publish(message);
+            var response = messageQueueClient.Get<HelloResponse>(queueName);
+            var helloResponse = response.GetBody();
+            helloResponse.Result.Print();
 
             Console.ReadLine();
 

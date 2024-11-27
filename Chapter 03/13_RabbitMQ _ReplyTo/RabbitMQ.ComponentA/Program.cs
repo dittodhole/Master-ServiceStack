@@ -16,9 +16,9 @@ namespace RabbitMQ.ComponentA
 
             var queueName = messageQueueClient.GetTempQueueName();
             var hello = new Hello
-            {
-                Name = "Demo"
-            };
+                        {
+                            Name = "reply to originator"
+                        };
             messageQueueClient.Publish(new Message<Hello>(hello)
                                        {
                                            ReplyTo = queueName
