@@ -34,8 +34,10 @@ namespace DoeInc.Ticketing.Web
             this.Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                                              new IAuthProvider[]
                                              {
-                                                 new BasicAuthProvider(),
-                                                 new CredentialsAuthProvider()
+                                                 //new BasicAuthProvider(),
+                                                 //new CredentialsAuthProvider(),
+                                                 //new DigestAuthProvider(),
+                                                 new BasicAuthProvider()
                                              }));
         }
 
