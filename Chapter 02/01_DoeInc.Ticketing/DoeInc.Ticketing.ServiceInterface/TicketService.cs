@@ -1,6 +1,5 @@
 ﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
-using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
