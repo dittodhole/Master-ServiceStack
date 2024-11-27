@@ -8,6 +8,6 @@ namespace DoeInc.ServiceStack.Extensions
         public string Operation { get; set; }
         public string DurationAbbreviation { get; set; }
         public int Counter { get; set; }
-        public TimeSpan ExpiresIn { get; set; }
+        public string ExpiresIn { get; set; }
     }
 }

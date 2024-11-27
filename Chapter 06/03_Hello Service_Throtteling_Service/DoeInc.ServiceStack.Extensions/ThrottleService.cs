@@ -25,7 +25,7 @@ namespace DoeInc.ServiceStack.Extensions
                 {
                     var throttleCounter = throttlePlugin.CreateThrottleCounter(counter.CacheKey);
                     throttleCounter.Counter = counter.Counter;
-                    throttleCounter.ExpiresIn = counter.ExpiresIn;
+                    throttleCounter.ExpiresIn = counter.ExpiresIn.ToString();
                     return throttleCounter;
                 }).ToArray()
             };
