@@ -1,14 +1,14 @@
-﻿using Funq;
-using RedisMQ.Models;
-using ServiceStack;
-using ServiceStack.Auth;
-using ServiceStack.Caching;
-using ServiceStack.Data;
+﻿using ServiceStack;
 using ServiceStack.Host;
 using ServiceStack.Messaging;
 using ServiceStack.Messaging.Redis;
-using ServiceStack.OrmLite;
 using ServiceStack.Redis;
+using Funq;
+using RedisMQ.Models;
+using ServiceStack.Auth;
+using ServiceStack.Caching;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace RedisMQ.ServiceB
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.Text;
@@ -42,7 +43,8 @@ namespace InMemoryMQ
                                                       exception.PrintDump();
 
                                                       var requeue = ++message.RetryAttempts < TransientMessageServiceBase.DefaultRetryCount;
-                                                      //var requeue = ++message.RetryAttempts < MessageHandler<Hello>.DefaultRetryCount;
+
+                                                      message.Error = exception.ToResponseStatus();
 
                                                       messageHandler.MqClient.Nak(message,
                                                                                   requeue,

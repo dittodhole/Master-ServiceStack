@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using RabbitMQ.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
-using RabbitMQ.Models;
 using ServiceStack;
-using ServiceStack.Messaging;
 using ServiceStack.RabbitMq;
+using ServiceStack.Messaging;
 using ServiceStack.Text;
 
 namespace RabbitMQ.ComponentB
@@ -55,12 +55,12 @@ namespace RabbitMQ.ComponentB
                              {
                                  basicGetResult = consumer.Queue.Dequeue();
                              }
-                             catch (EndOfStreamException endOfStreamException)
+                             catch (EndOfStreamException)
                              {
                                  // this is ok
                                  return;
                              }
-                             catch (OperationInterruptedException operationInterruptedException)
+                             catch (OperationInterruptedException)
                              {
                                  // this is ok
                                  return;
