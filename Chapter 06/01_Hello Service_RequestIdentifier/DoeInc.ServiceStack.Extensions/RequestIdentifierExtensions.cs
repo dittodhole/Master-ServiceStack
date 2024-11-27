@@ -1,4 +1,5 @@
 ﻿using ServiceStack;
+using ServiceStack.Host;
 using ServiceStack.Web;
 
 namespace DoeInc.ServiceStack.Extensions
@@ -7,7 +8,7 @@ namespace DoeInc.ServiceStack.Extensions
     {
         public static string GetRequestIdentifier(this IRequest request)
         {
-            return request.GetParamInRequestHeader(RequestIdentifierPlugin.RequestIdentifierKey);
+            return request.GetItemStringValue(RequestIdentifierPlugin.RequestIdentifierKey) ?? request.GetParamInRequestHeader(RequestIdentifierPlugin.RequestIdentifierKey);
         }
     }
 }
