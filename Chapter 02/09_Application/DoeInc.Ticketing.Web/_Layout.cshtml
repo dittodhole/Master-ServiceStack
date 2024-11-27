@@ -4,17 +4,34 @@
 <head>
     <script type="text/javascript" src="@this.Href("~/Scripts/jquery-1.9.1.min.js")"></script>
     <script type="text/javascript" src="@this.Href("~/Scripts/bootstrap.min.js")"></script>
+    <script type="text/javascript" src="@this.Href("~/Scripts/knockout-3.3.0.js")"></script>
     <link rel="stylesheet" href="@this.Href("~/Content/bootstrap.min.css")"/>
     <link rel="stylesheet" href="@this.Href("~/Content/bootstrap-theme.min.css")"/>
     <style type="text/css">
         .container { margin-top: 1em; }
     </style>
+    <script type="text/javascript">
+        (function($) {
+            $.postJSON = function(url, data) {
+                var o = {
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8'
+                };
+                if (data !== undefined) {
+                    o.data = JSON.stringify(data);
+                }
+                return $.ajax(o);
+            };
+        }(jQuery));
+    </script>
 </head>
 <body>
 <div class="container">
     @this.RenderBody()
 </div>
-@if (IsAuthenticated)
+@if (this.IsAuthenticated)
 {
     <div class="container">
         <a href="/auth/@AuthenticateService.LogoutAction">Logout</a>
