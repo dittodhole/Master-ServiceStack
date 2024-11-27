@@ -1,6 +1,6 @@
 ﻿using ServiceStack;
 
-namespace HelloWorld.Website
+namespace HelloWorld.Website.api
 {
     public class HelloService : IService,
                                 IAny<Hello>

@@ -1,7 +1,7 @@
 ﻿using Funq;
 using ServiceStack;
 
-namespace HelloWorld.Website
+namespace HelloWorld.Website.api
 {
     public class AppHost : AppHostBase
     {

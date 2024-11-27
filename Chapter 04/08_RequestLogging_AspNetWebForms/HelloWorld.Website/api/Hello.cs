@@ -1,6 +1,6 @@
 ﻿using ServiceStack;
 
-namespace HelloWorld.Website
+namespace HelloWorld.Website.api
 {
     [Route("/hello/{Name}")]
     public class Hello : IReturn<string>
