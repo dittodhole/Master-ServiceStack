@@ -1,0 +1,41 @@
+﻿@inherits ViewPage
+@{
+    var serverEventsFeature = this.GetPlugin<ServerEventsFeature>();
+}
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/js/ss-utils.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var eventSource = new EventSource('@serverEventsFeature.StreamPath?t=' + new Date().getTime());
+    eventSource.addEventListener('error', function (e) {
+        console.log(e);
+    }, false);
+    $(eventSource).handleServerEvents({
+        handlers: {
+            onConnect: function (subscription) {
+                console.log('onConnect', subscription);
+            },
+            onJoin: function (subscription) {
+                console.log('onJoin', subscription);
+            },
+            onHeartbeat: function (subscription, messageEvent) {
+                console.log('onHeartbeat', subscription, messageEvent);
+            },
+            onLeave: function (subscription) {
+                console.log('onLeave', subscription);
+            },
+            Say: function (say) {
+                console.log(say);
+            }
+        }
+    });
+</script>
+</body>
+</html>
