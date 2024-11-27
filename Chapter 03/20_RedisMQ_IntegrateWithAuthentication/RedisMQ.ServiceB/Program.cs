@@ -1,5 +1,6 @@
 ﻿using System;
 using RedisMQ.Models;
+using ServiceStack.Messaging;
 using ServiceStack.Text;
 
 namespace RedisMQ.ServiceB
@@ -15,6 +16,9 @@ namespace RedisMQ.ServiceB
             "listening to RedisMQ".Print();
 
             Console.ReadLine();
+
+            var messageService = appHost.Resolve<IMessageService>();
+            messageService.Dispose();
 
             appHost.Dispose();
         }
