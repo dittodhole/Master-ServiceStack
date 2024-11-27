@@ -10,9 +10,9 @@ namespace RCON.Server
     {
         private static void Main(string[] args)
         {
-            var ipAddress = IPAddress.Parse("127.0.0.1");
-            var ipEndPoint = new IPEndPoint(ipAddress,
-                                            12345);
+            const int port = 12345;
+            var ipEndPoint = new IPEndPoint(IPAddress.Loopback,
+                                            port);
             var messageService = new ServiceStack.Messaging.Rcon.Server(ipEndPoint);
             messageService.RegisterHandler<Hello>(message =>
                                                   {
