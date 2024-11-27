@@ -1,5 +1,4 @@
-﻿using System;
-using DoeInc.Ticketing.Core;
+﻿using DoeInc.Ticketing.Core;
 using DoeInc.Ticketing.ServiceModel;
 using ServiceStack;
 

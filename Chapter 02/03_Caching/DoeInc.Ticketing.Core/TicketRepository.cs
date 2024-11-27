@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DoeInc.Ticketing.ServiceModel;
 using DoeInc.Ticketing.ServiceModel.Types;
 using ServiceStack;
