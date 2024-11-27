@@ -3,6 +3,7 @@ using DoeInc.Ticketing.ServiceInterface;
 using DoeInc.Ticketing.ServiceModel;
 using Funq;
 using ServiceStack;
+using ServiceStack.Api.Swagger;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 
@@ -58,6 +59,7 @@ namespace DoeInc.Ticketing.Web
             container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
                                                                                          SqliteDialect.Provider));
 
+            this.Plugins.Add(new SwaggerFeature());
             //Config examples
             //this.Plugins.Add(new PostmanFeature());
             //this.Plugins.Add(new CorsFeature());
