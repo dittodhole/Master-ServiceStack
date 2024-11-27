@@ -1,11 +1,14 @@
-﻿using DoeInc.Ticketing.ServiceModel;
+﻿using System;
+using System.Collections.Generic;
+using DoeInc.Ticketing.ServiceModel;
 using DoeInc.Ticketing.ServiceModel.Types;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 
 namespace DoeInc.Ticketing.Core
 {
-    public class CommentRepository
+    public class CommentRepository : IRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -22,19 +25,46 @@ namespace DoeInc.Ticketing.Core
             }
         }
 
-        public void Delete(DeleteComment request)
+        public void Initialize()
         {
-            throw new System.NotImplementedException();
+            using (var db = this.ConnectionFactory.Open())
+            {
+                db.CreateTableIfNotExists<Comment>();
+            }
         }
 
-        public Comment[] Read(GetComments request)
+        public void Delete(DeleteComment request)
         {
-            throw new System.NotImplementedException();
+            using (var db = this.ConnectionFactory.Open())
+            {
+                db.Delete<Comment>(new
+                                   {
+                                       request.Id,
+                                       request.TicketId
+                                   });
+            }
+        }
+
+        public List<Comment> Read(GetComments request)
+        {
+            using (var db = this.ConnectionFactory.Open())
+            {
+                return db.Select<Comment>(arg => arg.TicketId == request.TicketId);
+            }
         }
 
         public Comment Store(StoreComment request)
         {
-            throw new System.NotImplementedException();
+            var comment = request.ConvertTo<Comment>();
+            using (var db = this.ConnectionFactory.Open())
+            {
+                var success = db.Save(comment);
+                if (!success)
+                {
+                    return null;
+                }
+            }
+            return comment;
         }
     }
 }

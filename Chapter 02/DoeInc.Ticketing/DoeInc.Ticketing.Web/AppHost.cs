@@ -47,8 +47,12 @@ namespace DoeInc.Ticketing.Web
                 .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
                                     ApplyTo.Delete);
 
-            container.RegisterAutoWired<CommentRepository>();
-            container.RegisterAutoWired<TicketRepository>();
+            container.RegisterAutoWired<CommentRepository>()
+                     .InitializedBy((container1,
+                                     repository) => repository.Initialize());
+            container.RegisterAutoWired<TicketRepository>()
+                     .InitializedBy((container1,
+                                     repository) => repository.Initialize());
             container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
                                                                                          SqliteDialect.Provider));
 
