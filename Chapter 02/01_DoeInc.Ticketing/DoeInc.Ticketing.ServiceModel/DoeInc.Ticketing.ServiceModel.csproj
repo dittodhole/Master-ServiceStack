@@ -53,7 +53,6 @@
     <Compile Include="GetTickets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\Comment.cs" />
-    <Compile Include="Types\EntityBase.cs" />
     <Compile Include="Types\Enums.cs" />
     <Compile Include="Types\Ticket.cs" />
   </ItemGroup>

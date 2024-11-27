@@ -7,7 +7,7 @@ namespace DoeInc.Ticketing.ServiceModel
     {
         public int Id { get; set; }
         public ulong RowVersion { get; set; }
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
         public string Text { get; set; }
     }
 }
