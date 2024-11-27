@@ -18,6 +18,12 @@ namespace InMemoryMQ
 
             messageService.RegisterHandler<HelloRequest>(m =>
                                                          {
+                                                             "consumer called for the {0} time".Print(m.RetryAttempts);
+
+                                                             if (m.RetryAttempts == 0)
+                                                             {
+                                                                 throw new Exception("causing at least one retry");
+                                                             }
                                                              var helloRequest = m.GetBody();
                                                              var name = helloRequest.Name;
                                                              var helloResponse = new HelloResponse
