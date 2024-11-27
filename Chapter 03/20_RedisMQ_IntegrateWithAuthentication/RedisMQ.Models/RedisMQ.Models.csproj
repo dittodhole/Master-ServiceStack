@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Hello.cs" />
-    <Compile Include="HelloResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

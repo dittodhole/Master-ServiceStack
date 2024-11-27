@@ -5,20 +5,17 @@ using ServiceStack.Text;
 namespace RedisMQ.ServiceB
 {
     public class Service : ServiceStack.Service,
-                           IAny<Hello>
+                           IAnyVoid<Hello>
     {
         [Authenticate]
-        public object Any(Hello request)
+        public void Any(Hello request)
         {
-            "incoming request for hello".Print();
+            var session = this.GetSession();
+            var name = "{0} {1}".Fmt(session.FirstName,
+                                     session.LastName);
+            var result = "Hello {0}".Fmt(name);
 
-            var name = request.Name;
-            var helloResponse = new HelloResponse
-                                {
-                                    Result = "Hello {0}".Fmt(name)
-                                };
-
-            return helloResponse;
+            result.Print();
         }
     }
 }
