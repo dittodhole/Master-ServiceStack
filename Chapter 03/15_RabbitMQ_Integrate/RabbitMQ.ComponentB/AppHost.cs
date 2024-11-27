@@ -20,7 +20,7 @@ namespace RabbitMQ.ComponentB
             this.Routes.Add<Hello>("/hello/{Name}");
 
             container.Register<IMessageService>(arg => new RabbitMqServer());
-            container.RegisterAs<RabbitMqMessageFactory, IMessageFactory>();
+            container.Register<IMessageFactory>(arg => new RabbitMqMessageFactory());
 
             var messageService = container.Resolve<IMessageService>();
             messageService.RegisterHandler<Hello>(this.ServiceController.ExecuteMessage);
