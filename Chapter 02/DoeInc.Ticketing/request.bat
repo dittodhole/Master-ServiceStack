@@ -1,0 +1,1 @@
+..\..\Resources\curl.exe -X POST http://localhost:61163/tickets -d @ticket.json --header "Content-Type: application/json" -o ticket.json
