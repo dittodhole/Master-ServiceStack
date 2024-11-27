@@ -14,7 +14,13 @@ namespace DoeInc.ServiceStack.Extensions
         private readonly Dictionary<Type, ThrottleRestrictionAttribute> _throttleRestrictionAttributes = new Dictionary<Type, ThrottleRestrictionAttribute>();
         private readonly HashSet<string> _cacheKeys = new HashSet<string>();
 
-        internal IEnumerable<string> CacheKeys => this._cacheKeys;
+        internal IEnumerable<string> CacheKeys
+        {
+            get
+            {
+                return this._cacheKeys;
+            }
+        }
 
         public void Register(IAppHost appHost)
         {
