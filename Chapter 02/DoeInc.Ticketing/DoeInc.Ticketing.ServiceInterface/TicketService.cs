@@ -1,4 +1,6 @@
-﻿using DoeInc.Ticketing.ServiceModel;
+﻿using System;
+using DoeInc.Ticketing.Core;
+using DoeInc.Ticketing.ServiceModel;
 using ServiceStack;
 
 namespace DoeInc.Ticketing.ServiceInterface
@@ -8,31 +10,46 @@ namespace DoeInc.Ticketing.ServiceInterface
                                  IGet<GetTicket>,
                                  IPost<StoreTicket>,
                                  IPut<StoreTicket>,
-                                 IDelete<DeleteTicket>
+                                 IDeleteVoid<DeleteTicket>
     {
-        public object Get(GetTickets request)
+        private readonly TicketRepository _ticketRepository;
+
+        public TicketService(TicketRepository ticketRepository)
         {
-            throw new System.NotImplementedException();
+            this._ticketRepository = ticketRepository;
+        }
+
+        private TicketRepository Repository
+        {
+            get
+            {
+                return this._ticketRepository;
+            }
+        }
+
+        public void Delete(DeleteTicket request)
+        {
+            throw new NotImplementedException();
         }
 
         public object Get(GetTicket request)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public object Get(GetTickets request)
+        {
+            throw new NotImplementedException();
         }
 
         public object Post(StoreTicket request)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public object Put(StoreTicket request)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public object Delete(DeleteTicket request)
-        {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

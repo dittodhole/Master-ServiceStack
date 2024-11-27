@@ -1,7 +1,10 @@
-﻿using DoeInc.Ticketing.ServiceInterface;
+﻿using DoeInc.Ticketing.Core;
+using DoeInc.Ticketing.ServiceInterface;
 using DoeInc.Ticketing.ServiceModel;
 using Funq;
 using ServiceStack;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace DoeInc.Ticketing.Web
 {
@@ -43,6 +46,12 @@ namespace DoeInc.Ticketing.Web
                                    ApplyTo.Put)
                 .Add<DeleteComment>("/tickets/{TicketId}/comments/{Id}",
                                     ApplyTo.Delete);
+
+            container.RegisterAutoWired<CommentRepository>();
+            container.RegisterAutoWired<TicketRepository>();
+            container.Register<IDbConnectionFactory>(arg => new OrmLiteConnectionFactory(":memory:",
+                                                                                         SqliteDialect.Provider));
+
             //Config examples
             //this.Plugins.Add(new PostmanFeature());
             //this.Plugins.Add(new CorsFeature());
