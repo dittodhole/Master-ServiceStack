@@ -1,0 +1,24 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>IndexView</title>
+</head>
+<body>
+<div>
+    <a href="/api/requestlogs">Request Logs</a>
+    @using (Html.BeginForm("Index",
+                           "Home",
+                           FormMethod.Post))
+    {
+        @Html.TextBox("foo")
+        <button>Submit</button>
+    }
+</div>
+</body>
+</html>
